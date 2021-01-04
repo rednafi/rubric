@@ -27,15 +27,15 @@ Following is a list of config files that Rubric is going to add to your target d
 
 ```
 root
-├── .flake8                #` Config file for .flake8
-├── .gitignore             #` Python specific .gitignore file
-├── makefile               #` Makefile containing the commands to lint your code
-├── pyproject.toml         #` Toml file to with the configs for mypy, black & isort
-├── README.md              #` A readme boilerplate
-├── requirements-dev.in    #` File to specify the top level dev requirements
-├── requirements-dev.txt   #` File to specify the dev requirements
-├── requirements.in        #` File to specify the top level app requirements
-└── requirements.txt       #` File to specify the pinned app requirements
+├── .flake8                # Config file for .flake8
+├── .gitignore             # Python specific .gitignore file
+├── makefile               # Makefile containing the commands to lint your code
+├── pyproject.toml         # Toml file to with the configs for mypy, black & isort
+├── README.md              # A readme boilerplate
+├── requirements-dev.in    # File to specify the top level dev requirements
+├── requirements-dev.txt   # File to specify the dev requirements
+├── requirements.in        # File to specify the top level app requirements
+└── requirements.txt       # File to specify the pinned app requirements
 ```
 
 The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
