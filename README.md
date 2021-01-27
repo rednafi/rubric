@@ -141,7 +141,7 @@ The files will contain minimal but sensible default configurations for the respe
 * If you want to check and update the configs across multiple repositories in a single sweep, use the following command:
 
     ```
-    $ s="dir1 dir2 dir3"; echo $s | xargs -n 1 -P $(echo $s | wc -w) echo rubric run -d 
+    s="dir1 dir2 dir3"; echo $s | xargs -n 1 -P $(echo $s | wc -w) echo rubric run -d
     ```
 
     This command will spawn 3 processes to create the config files in `dir1`, `dir2`, and `dir3` in parallel.
