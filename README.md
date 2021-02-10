@@ -58,7 +58,8 @@ The files will contain minimal but sensible default configurations for the respe
 
     You should see the following output:
 
-    ```           ___       __       _
+    ```
+           ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
