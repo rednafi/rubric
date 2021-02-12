@@ -63,9 +63,9 @@ def _copy_over(
             if open_mode == "w+":
                 if overwrite:
                     print(f"Overwriting {src_filename}...")
+
                 else:
                     print(f"Creating {src_filename}...")
-
             else:
                 print(f"Appending to {src_filename}...")
 
@@ -79,8 +79,10 @@ async def copy_over(
     append: bool = False,
 ) -> None:
     """
-    Creates a file in the provided directory and copies the contents
-    of the file having the same name in the `rubric` directory.
+    Creates a file named `src_file` in the `dst_dirname` directory and
+    looks into `rubric` directory to see if there is a file with the same
+    name as `src_file` exists. If the file exists then it copies the contents
+    of the file over to `dst_dirname/src_filename`.
     """
 
     loop = asyncio.get_running_loop()
@@ -95,7 +97,9 @@ async def consumer(
     overwrite: bool = False,
     append: bool = False,
 ) -> None:
-    """Create files defined in the `FILE_NAMES` asynchronously."""
+    """Creates / Overwrites / Appends to the files defined in the
+    `FILE_NAMES` asynchronously.
+    """
 
     tasks = [
         copy_over(src_filename, dst_dirname, overwrite, append)
