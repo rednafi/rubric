@@ -7,11 +7,11 @@ from rubric import rubric
 async def test_create_file(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
-    p = d / "mypy.ini"
+    p = d / "pyproject.toml"
 
     # Creates a file in the temporary directory and copies the contents
     # of rubric/mypy.ini file to it
-    await rubric.copy_over("mypy.ini", dirname=str(d))
+    await rubric.copy_over("pyproject.toml", dirname=str(d))
     assert len(list(d.iterdir())) == 1
 
     # Test the content of the mypy.ini file.
@@ -20,7 +20,7 @@ async def test_create_file(tmp_path):
     # Raises filenotfound error when the target name of the file
     # doesn't exist in the rubric/ directory.
     with pytest.raises(FileNotFoundError):
-        await rubric.copy_over("myp.ini", dirname=str(d))
+        await rubric.copy_over("pypro.toml", dirname=str(d))
 
 
 @pytest.mark.asyncio
