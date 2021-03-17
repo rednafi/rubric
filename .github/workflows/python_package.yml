@@ -36,8 +36,9 @@ jobs:
           echo "Checking linter formatting..."
           poetry run black --check .
           poetry run isort --check .
-          poetry run mypy .
           poetry run flake8 .
+          poetry run echo y | mypy --install-types
+          poetry run mypy .
 
       - name: Run Tests
         run: |
