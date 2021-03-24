@@ -90,7 +90,19 @@ The files will contain minimal but sensible default configurations for the respe
     ```
     rubric --list
     ```
+
     ```
+    config files that are about to be generated:
+
+    => .flake8
+    => .gitignore
+    => README.md
+    => makefile
+    => pyproject.toml
+    => requirements-dev.in
+    => requirements-dev.txt
+    => requirements.in
+    => requirements.txt
     ```
 
 * Initialize a project with the following command:
