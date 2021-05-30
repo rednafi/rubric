@@ -61,16 +61,9 @@ async def consumer(dirname: str, overwrite: bool) -> None:
     dir_name : str
         Target directory name where the file should be created.
     """
-    await asyncio.gather(
-        *[
-            create_file(
-                filename,
-                dirname,
-                overwrite,
-            )
-            for filename in FILE_NAMES
-        ],
-    )
+    tasks = [create_file(filename, dirname, overwrite) for filename in FILE_NAMES]
+
+    await asyncio.gather(*tasks)
 
 
 class CLI:
@@ -99,9 +92,8 @@ class CLI:
 
         # Add arguments.
         parser.add_argument(
-            "--run",
+            "run",
             help="run rubric & initialize the project scaffold",
-            action="store_true",
         )
         parser.add_argument("--dirname", help="target directory name")
         parser.add_argument(
@@ -125,7 +117,7 @@ class CLI:
         dir_name = _dir_name if _dir_name else "."
         overwrite = _overwrite if _overwrite else False
 
-        if args.run:
+        if args.run == "run":
             asyncio.run(self.func(dir_name, overwrite))
 
 
