@@ -5,6 +5,7 @@
 
 </div>
 
+
 ## Preface
 
 Rubric is an opinionated project initializer for Python. Following is a list of config files that Rubric is going to add to your directory:
@@ -84,3 +85,7 @@ root
     ```
     rubric run --directory="some/custom/directory"
     ```
+
+<div align="center">
+<i> ✨ 🍰 ✨ </i>
+</div>
