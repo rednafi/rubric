@@ -44,7 +44,7 @@ async def create_file(filename: str, dirname: str = ".", overwrite: bool = False
             print(f"file {filename} already exists, skipping...")
             return
 
-    with importlib.resources.open_text("rsrc", filename) as src_file:
+    with importlib.resources.open_text("rubric", filename) as src_file:
         async with aiofiles.open(f"{dirname}/{filename}", "w+") as dst_file:
             print(f"creating {filename}...")
             await dst_file.write(src_file.read())
