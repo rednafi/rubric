@@ -8,27 +8,35 @@
 
 ## Preface
 
-Rubric is an opinionated project initializer for Python. Following is a list of config files that Rubric is going to add to your directory:
+Rubric is an opinionated project initializer for Python. It assumes that you'll use:
+
+* Black as the primary code formatter.
+* Isort to sort the imports.
+* Flake8 to ensure style guide conformance.
+* Mypy to check the type hints.
+* Pip-tools to manage the dependencies.
+
+Following is a list of config files that Rubric is going to add to your directory. The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
 
 ```
 root
-├── .flake8
-├── .gitignore
-├── makefile
-├── mypy.ini
-├── pyproject.toml
-├── README.md
-├── requirements-dev.txt
-├── requirements.in
-└── requirements.txt
+├── .flake8                  # Config file for .flake8
+├── .gitignore               # Python specific .gitignore file
+├── makefile                 # Makefile to lint your code
+├── mypy.ini                 # Config file for mypy type checker
+├── pyproject.toml           # Toml file to hold a few common config vars
+├── README.md                # A readme boilerplate
+├── requirements-dev.txt     # File to specify the dev requirements
+├── requirements.in          # File to specify the top level app requirements
+└── requirements.txt         # File to specify the pinned app requirements
 ```
 
 
 ## Installation
 
-* Make a virtual environment in your project's root director.
+* Make a virtual environment in your project's root directory.
 
-* Activate the environemnt and run:
+* Activate the environment and run:
 
     ```
     pip install rubric
@@ -72,9 +80,9 @@ root
     rubric run
     ```
 
-    This will run the tool in a non-destructive way—that means it won't overwrite any of the configuration file that you might have in the directory.
+    This will run the tool in a non-destructive way—that means it won't overwrite any of the configuration files that you might have in the directory.
 
-    If you want to overwrite any of the existing config file that you might have in the directory, then run:
+    If you want to overwrite any of the existing config files that you might have in the directory, then run:
 
     ```
     rubric run --overwrite
