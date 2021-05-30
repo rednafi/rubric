@@ -1,8 +1,16 @@
+<div align="center">
+
+<h1>Rubric</h1>
+<h3>Automate the boilerplate while initializing your Python project</h3>
+
+</div>
+
 ## Preface
 
-Rubric is an opinionated project initializer for Python. Following is a list of config files that rubric is going to add to your directory:
+Rubric is an opinionated project initializer for Python. Following is a list of config files that Rubric is going to add to your directory:
 
 ```
+root
 ├── .flake8
 ├── .gitignore
 ├── makefile
