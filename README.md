@@ -3,18 +3,21 @@
 <h1>Rubric</h1>
 <strong>>> <i>Automate the boilerplate while initializing your Python project</i> <<</strong>
 
+&nbsp;
+
 </div>
 
+![img](https://images.unsplash.com/photo-1581087659125-322b6be59e99?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)
 
 ## Preface
 
 Rubric is an opinionated project initializer for Python. It assumes that you'll use:
 
-* Black as the primary code formatter.
-* Isort to sort the imports.
-* Flake8 to ensure style guide conformance.
-* Mypy to check the type hints.
-* Pip-tools to manage the dependencies.
+* [Black](https://github.com/psf/black) as the primary code formatter.
+* [Isort](https://github.com/PyCQA/isort) to sort the imports.
+* [Flake8](https://github.com/PyCQA/flake8) to ensure style guide conformance.
+* [Mypy](https://github.com/python/mypy) to check the type hints.
+* [Pip-tools](https://github.com/jazzband/pip-tools) to manage the dependencies.
 
 Following is a list of config files that Rubric is going to add to your directory:
 
