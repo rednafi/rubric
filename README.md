@@ -16,7 +16,7 @@ Rubric is an opinionated project initializer for Python. It assumes that you'll 
 * Mypy to check the type hints.
 * Pip-tools to manage the dependencies.
 
-Following is a list of config files that Rubric is going to add to your directory. The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
+Following is a list of config files that Rubric is going to add to your directory:
 
 ```
 root
@@ -31,6 +31,7 @@ root
 └── requirements.txt         # File to specify the pinned app requirements
 ```
 
+The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
 
 ## Installation
 
