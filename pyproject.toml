@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rubric"
-version = "0.1.2"
+version = "0.1.3"
 description = "Initialize your Python project with all the linting boilerplates you need"
 authors = ["rednafi <redowan.nafi@gmail.com>"]
 license = "MIT"
@@ -31,7 +31,7 @@ isort = "^5.8.0"
 # CLI entrypoints
 flake8 = "^3.9.2"
 [tool.poetry.scripts]
-rubric = "rubric:cli_entrypoint"
+rubric = "rubric.rubric:cli_entrypoint"
 
 
 [build-system]
