@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1>Rubric</h1>
-<h4>Automate the boilerplate while initializing your Python project</h4>
+<strong>>> <i>Automate the boilerplate while initializing your Python project</i> <<</strong>
 
 </div>
 
@@ -79,7 +79,7 @@ root
     rubric run --overwrite
     ```
 
-    You can also point Rubric at a directory.
+    You can also point Rubric to a directory.
 
     ```
     rubric run --directory="some/custom/directory"
