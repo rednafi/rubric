@@ -21,9 +21,7 @@ FILE_NAMES = (
 )
 
 
-async def create_file(
-    filename: str, dirname: str = ".", overwrite: bool = False
-) -> None:
+async def create_file(filename: str, dirname: str = ".", overwrite: bool = False):
     """
     Creates a file and copies the contents of the file
     having the same name in the `rsrc` directory.
@@ -80,9 +78,21 @@ class CLI:
     ) -> None:
         self.func = func
 
+    @property
+    def header(self):
+        """CLI header class."""
+        print(
+            """
+           ___       __       _
+          / _ \__ __/ /  ____(_)___
+         / , _/ // / _ \/ __/ / __/
+        /_/|_|\_,_/_.__/_/ /_/\__/
+        """
+        )
+
     def build_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
-            description="\nEpigraph -- Initialize your Python project ⚙️\n"
+            description="\nRubric -- Initialize your Python project ⚙️\n"
         )
 
         # Add arguments.
@@ -96,6 +106,7 @@ class CLI:
         return parser
 
     def entrypoint(self) -> None:
+        self.header
         parser = self.build_parser()
         args = parser.parse_args()
 
@@ -106,5 +117,8 @@ class CLI:
         asyncio.run(self.func(dir_name, overwrite))
 
 
-cli = CLI()
-cli.entrypoint()
+def cli_entrypoint(argv=None):
+    """CLI entrypoint callable."""
+    cli = CLI()
+    cli.entrypoint()
+
