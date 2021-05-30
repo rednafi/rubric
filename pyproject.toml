@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "rubric"
+version = "0.1.2"
+description = "Initialize your Python project with all the linting boilerplates you need"
+authors = ["rednafi <redowan.nafi@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/rednafi/rubric"
+repository = "https://github.com/rednafi/rubric"
+keywords = ["python", "configuration", "project", "initialization"]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Quality Assurance",
+]
+include = ["LICENSE"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+aiofiles = "^0.7.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.812"
+isort = "^5.8.0"
+
+
+# CLI entrypoints
+flake8 = "^3.9.2"
+[tool.poetry.scripts]
+rubric = "rubric:cli_entrypoint"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.isort]
+profile="black"
+atomic=true
+extend_skip_glob="migrations,scripts"
+line_length=88
+
+
+[tool.black]
+extend-exclude="migrations,scripts"
