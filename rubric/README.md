@@ -1,7 +1,7 @@
 <div align="center">
 
-<h1>Project Name </h1>
-<h3>Project Description</h3>
+<h1>Project Name</h1>
+<h4>Project Description</h4>
 
 </div>
 

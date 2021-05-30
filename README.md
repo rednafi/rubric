@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1>Rubric</h1>
-<h3>Automate the boilerplate while initializing your Python project</h3>
+<h4>Automate the boilerplate while initializing your Python project</h4>
 
 </div>
 
