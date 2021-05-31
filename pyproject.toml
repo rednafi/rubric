@@ -20,6 +20,7 @@ include = ["LICENSE"]
 [tool.poetry.dependencies]
 python = "^3.7"
 aiofiles = "^0.7.0"
+pytest-asyncio = "^0.15.1"
 
 
 [tool.poetry.dev-dependencies]

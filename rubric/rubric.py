@@ -23,7 +23,11 @@ FILE_NAMES = (
 )
 
 
-async def create_file(filename: str, dirname: str = ".", overwrite: bool = False):
+async def create_file(
+    filename: str,
+    dirname: str = ".",
+    overwrite: bool = False,
+) -> None:
     """
     Creates a file and copies the contents of the file
     having the same name in the `rsrc` directory.
@@ -38,7 +42,7 @@ async def create_file(filename: str, dirname: str = ".", overwrite: bool = False
     """
 
     if dirname:
-        dirname = dirname.strip("/")
+        dirname = dirname.rstrip("/")
 
     # Do nothing, if the file already exists.
     if not overwrite:
