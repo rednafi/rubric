@@ -25,7 +25,7 @@ Following is a list of config files that Rubric is going to add to your director
 root
 ├── .flake8                  # Config file for .flake8
 ├── .gitignore               # Python specific .gitignore file
-├── makefile                 # Makefile to lint your code
+├── makefile                 # Makefile containing the commands to lint your code
 ├── mypy.ini                 # Config file for mypy type checker
 ├── pyproject.toml           # Toml file to hold a few common config vars
 ├── README.md                # A readme boilerplate
