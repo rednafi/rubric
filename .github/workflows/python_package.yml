@@ -34,7 +34,10 @@ jobs:
       - name: Check Linter
         run: |
           echo "Checking linter formatting..."
-          make -f './makefile' lint-check
+          poetry run black --check .
+          poetry run isort --check .
+          poetry run mypy .
+          poetry run flake8 .
 
       - name: Run tests
         run: |
