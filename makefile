@@ -5,9 +5,11 @@ help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 
-lint: black_ isort_ flake_ mypy_	## Apply all the linters
+.PHONY: lint
+lint: black isort flake mypy	## Apply all the linters
 
 
+.PHONY: lint-check
 lint-check:
 	@echo
 	@echo "Checking linter rules..."
@@ -17,7 +19,8 @@ lint-check:
 	@isort --check $(path)
 
 
-black_: ## Apply black
+.PHONY: black
+black: ## Apply black
 	@echo
 	@echo "Applying black..."
 	@echo "================="
@@ -27,14 +30,16 @@ black_: ## Apply black
 	@echo
 
 
-isort_: ## Apply isort
+.PHONY: isort
+isort: ## Apply isort
 	@echo "Applying isort..."
 	@echo "================="
 	@echo
 	@isort $(path)
 
 
-flake_: ## Apply flake8
+.PHONY: flake
+flake: ## Apply flake8
 	@echo
 	@echo "Applying flake8..."
 	@echo "================="
@@ -42,7 +47,8 @@ flake_: ## Apply flake8
 	@flake8 $(path)
 
 
-mypy_: ## Apply mypy
+.PHONY: mypy
+mypy: ## Apply mypy
 	@echo
 	@echo "Applying mypy..."
 	@echo "================="
@@ -50,7 +56,8 @@ mypy_: ## Apply mypy
 	@mypy $(path)
 
 
-trim_imports: ## Remove unused imports
+.PHONY: trim-imports
+trim-imports: ## Remove unused imports
 	@autoflake --remove-all-unused-imports \
 	--ignore-init-module-imports \
 	--in-place \
@@ -58,10 +65,12 @@ trim_imports: ## Remove unused imports
 	$(path)
 
 
-dep_lock: ## Freeze deps in `requirements.txt` file
+.PHONY: dep-lock
+dep-lock: ## Freeze deps in `requirements.txt` file
 	@sort --ignore-case -o requirements.in requirements.in
 	@pip-compile requirements.in --output-file=requirements.txt
 
 
-dep_sync: ## Sync venv installation with `requirements.txt`
+.PHONY: dep-sync
+dep-sync: ## Sync venv installation with `requirements.txt`
 	@pip-sync

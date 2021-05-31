@@ -56,8 +56,8 @@ mypy: ## Apply mypy
 	@mypy $(path)
 
 
-.PHONY: trim_imports
-trim_imports: ## Remove unused imports
+.PHONY: trim-imports
+trim-imports: ## Remove unused imports
 	@autoflake --remove-all-unused-imports \
 	--ignore-init-module-imports \
 	--in-place \
@@ -65,12 +65,12 @@ trim_imports: ## Remove unused imports
 	$(path)
 
 
-.PHONY: dep_lock
-dep_lock: ## Freeze deps in `requirements.txt` file
+.PHONY: dep-lock
+dep-lock: ## Freeze deps in `requirements.txt` file
 	@sort --ignore-case -o requirements.in requirements.in
 	@pip-compile requirements.in --output-file=requirements.txt
 
 
-.PHONY: dep_sync
-dep_sync: ## Sync venv installation with `requirements.txt`
+.PHONY: dep-sync
+dep-sync: ## Sync venv installation with `requirements.txt`
 	@pip-sync

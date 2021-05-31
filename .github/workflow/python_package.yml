@@ -1,0 +1,42 @@
+name: Crusher Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install the Dependencies
+        run: |
+          echo "Upgrading pip ...."
+          python -m pip install --upgrade pip
+          echo "Installing poetry..."
+          pip install poetry
+          echo "Installing the dependencies..."
+          poetry install
+
+      - name: Check Linter
+        run: |
+          echo "Checking linter formatting..."
+          poetry run make lint-check
+
+      - name: Run tests
+        run: |
+          echo "Running the tests..."
+          poetry run pytest tests
