@@ -34,7 +34,7 @@ jobs:
       - name: Check Linter
         run: |
           echo "Checking linter formatting..."
-          make lint-check
+          make -f './makefile' lint-check
 
       - name: Run tests
         run: |

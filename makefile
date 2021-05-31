@@ -17,6 +17,8 @@ lint-check:
 	@echo
 	@black --check $(path)
 	@isort --check $(path)
+	@flake8 $(path)
+	@mypy $(path)
 
 
 .PHONY: black
