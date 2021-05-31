@@ -34,7 +34,7 @@ jobs:
       - name: Check Linter
         run: |
           echo "Checking linter formatting..."
-          poetry run make lint-check
+          make lint-check
 
       - name: Run tests
         run: |
