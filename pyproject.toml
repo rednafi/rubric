@@ -20,17 +20,17 @@ include = ["LICENSE"]
 [tool.poetry.dependencies]
 python = "^3.7"
 aiofiles = "^0.7.0"
-pytest-asyncio = "^0.15.1"
 
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 mypy = "^0.812"
 isort = "^5.8.0"
+pytest-asyncio = "^0.15.1"
+flake8 = "^3.9.2"
 
 
 # CLI entrypoints
-flake8 = "^3.9.2"
 [tool.poetry.scripts]
 rubric = "rubric.rubric:cli_entrypoint"
 
