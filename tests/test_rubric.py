@@ -42,3 +42,15 @@ async def test_consumer(tmp_path):
     assert "tool.isort" in p.read_text()
     assert "center" in q.read_text()
     assert "pip-tools" in r.read_text()
+
+
+def test_cli_entrypoint(tmp_path, capsys):
+    d = tmp_path / "dest"
+    d.mkdir()
+
+    rubric.cli_entrypoint(["run", f"--dirname={str(d)}"])
+    capture = capsys.readouterr()
+    out = capture.out
+
+    assert r"____(_)___" in out
+    assert r"creating" in out

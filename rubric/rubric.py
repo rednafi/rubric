@@ -80,8 +80,10 @@ class CLI:
     @property
     def header(self):
         """CLI header class."""
+
+        # Raw string to escape a few string formatting errors.
         print(
-            """
+            r"""
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
@@ -108,13 +110,16 @@ class CLI:
 
         return parser
 
-    def entrypoint(self) -> None:
+    def entrypoint(self, argv: list[str] | None = None) -> None:
         self.header
         parser = self.build_parser()
 
         # Run help when the entrypoint command is called w/o any argument.
-        parser.parse_args(args=None if sys.argv[1:] else ["--help"])
-        args = parser.parse_args()
+        if not argv:
+            parser.parse_args(args=None if sys.argv[1:] else ["--help"])
+            args = parser.parse_args()
+        else:
+            args = parser.parse_args(argv)
 
         _dir_name = args.dirname
         _overwrite = args.overwrite
@@ -125,10 +130,10 @@ class CLI:
             asyncio.run(self.func(dir_name, overwrite))
 
 
-def cli_entrypoint(argv=None) -> None:
+def cli_entrypoint(argv: list[str] | None = None) -> None:
     """CLI entrypoint callable."""
     cli = CLI()
-    cli.entrypoint()
+    cli.entrypoint(argv)
 
 
 if __name__ == "__main__":
