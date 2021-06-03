@@ -60,8 +60,6 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-    $ rubric
-
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
@@ -80,8 +78,8 @@ The files will contain minimal but sensible default configurations for the respe
     --list                list the config files that are about to be generated
     --dirname DIRNAME     target directory name
     --overwrite OVERWRITE [OVERWRITE ...]
-                            overwrite existing linter config files, allowed values are: all,
-                            .flake8, .gitignore, README.md, makefile, mypy.ini, pyproject.toml,
+                            overwrite existing config files, allowed values are: all, .flake8,
+                            .gitignore, README.md, makefile, mypy.ini, pyproject.toml,
                             requirements-dev.in, requirements-dev.txt, requirements.in,
                             requirements.txt
     ```

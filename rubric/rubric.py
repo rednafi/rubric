@@ -124,7 +124,7 @@ class CLI:
         parser.add_argument(
             "--overwrite",
             help=(
-                "overwrite existing linter config files, "
+                "overwrite existing config files, "
                 "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
             ),
             nargs="+",
@@ -170,9 +170,11 @@ class CLI:
         else:
             args = parser.parse_args(argv)
 
+        # Handling pesky argument inconsistency errors.
         self.error_handlers(parser, args)
 
         filtered_filenames = self.filenames
+
         overwrite = args.overwrite
         if overwrite and overwrite != ["all"]:
             filtered_filenames = overwrite
@@ -188,7 +190,7 @@ class CLI:
                 )
 
         if args.list:
-            print("config files that are going to be generated:\n")
+            print("config files that are about to be generated:\n")
             for filename in filtered_filenames:
                 print(f"=> {filename}")
 
