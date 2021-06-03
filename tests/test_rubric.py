@@ -30,7 +30,7 @@ async def test_consumer(tmp_path):
 
     p = d / "pyproject.toml"
     q = d / "README.md"
-    r = d / "requirements-dev.txt"
+    r = d / "requirements-dev.in"
 
     # This should copy all the files from rubric/ to the temporary directory.
     await rubric.consumer(dirname=str(d), overwrite=True)
