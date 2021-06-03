@@ -36,7 +36,7 @@ async def test_consumer(tmp_path):
     await rubric.consumer(dirname=str(d), overwrite=True)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILE_NAMES)
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -53,4 +53,4 @@ def test_cli_entrypoint(tmp_path, capsys):
     out = capture.out
 
     assert r"____(_)___" in out
-    assert r"creating" in out
+    assert r"creating" or "exists" in out

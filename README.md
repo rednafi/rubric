@@ -67,21 +67,26 @@ The files will contain minimal but sensible default configurations for the respe
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric [-h] [--dirname DIRNAME] [--overwrite] run
+    usage: rubric [-h] [--list] [--dirname DIRNAME] [--overwrite OVERWRITE [OVERWRITE ...]]
+                [run]
 
     Rubric -- Initialize your Python project ⚙️
 
     positional arguments:
-    run                run rubric & initialize the project scaffold
+    run                   run rubric & initialize the project scaffold
 
     optional arguments:
-    -h, --help         show this help message and exit
-    --dirname DIRNAME  target directory name
-    --overwrite        overwrite existing linter config files
-
+    -h, --help            show this help message and exit
+    --list                list the config files that are about to be generated
+    --dirname DIRNAME     target directory name
+    --overwrite OVERWRITE [OVERWRITE ...]
+                            overwrite existing linter config files, allowed values are: all,
+                            .flake8, .gitignore, README.md, makefile, mypy.ini, pyproject.toml,
+                            requirements-dev.in, requirements-dev.txt, requirements.in,
+                            requirements.txt
     ```
 
-* Initialize your project with the following command:
+* Initialize a project with the following command:
 
     ```
     rubric run
@@ -92,13 +97,13 @@ The files will contain minimal but sensible default configurations for the respe
     If you want to overwrite any of the existing config files that you might have in the directory, then run:
 
     ```
-    rubric run --overwrite
+    rubric run --overwrite filename1 filename2
     ```
 
     You can also point Rubric to a directory.
 
     ```
-    rubric run --directory="some/custom/directory"
+    rubric run --directory "some/custom/directory"
     ```
 
 <div align="center">
