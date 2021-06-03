@@ -29,6 +29,7 @@ root
 ├── mypy.ini                 # Config file for mypy type checker
 ├── pyproject.toml           # Toml file to hold a few common config vars
 ├── README.md                # A readme boilerplate
+├── requirements-dev.in      # File to specify the top level dev requirements
 ├── requirements-dev.txt     # File to specify the dev requirements
 ├── requirements.in          # File to specify the top level app requirements
 └── requirements.txt         # File to specify the pinned app requirements
