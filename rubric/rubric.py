@@ -17,6 +17,7 @@ FILE_NAMES = (
     "makefile",
     "mypy.ini",
     "pyproject.toml",
+    "requirements-dev.in",
     "requirements-dev.txt",
     "requirements.in",
     "requirements.txt",
