@@ -26,20 +26,20 @@ jobs:
         run: |
           echo "Upgrading pip ...."
           python -m pip install --upgrade pip
+          echo "Installing poetry..."
+          pip install poetry
           echo "Installing the dependencies..."
-          python3 -m venv .venv
-          source .venv/bin/activate
-          pip install -r requiements.txt && pip install -r requirements-dev.txt
+          poetry install
 
       - name: Check Linter
         run: |
           echo "Checking linter formatting..."
-          black --check .
-          isort --check .
-          mypy .
-          flake8 .
+          poetry run black --check .
+          poetry run isort --check .
+          poetry run mypy .
+          poetry run flake8 .
 
       - name: Run Tests
         run: |
           echo "Running the tests..."
-          pytest tests
+          poetry run pytest tests
