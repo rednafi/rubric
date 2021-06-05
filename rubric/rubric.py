@@ -26,7 +26,7 @@ def _copy_over(src_fname: str, dst_fname: str) -> None:
     """
     This function takes a `src_fname` and a `dst_fname`.
     First, it searches in the `rubric` directory to check if there is
-    a file exists with the same name. If the file exists, it creates
+    a file that exists with the same name. If the file exists, it creates
     another file as `dst_fname` and copies over the content
     of the source file.
     """
@@ -47,12 +47,12 @@ async def copy_over(
 ) -> None:
     """
     Creates a file in the provided directory and copies the contents
-    of file file having the same name in the `rubric` directory.
+    of the file having the same name in the `rubric` directory.
 
     Parameters
     ----------
     filename : str
-        File name that needs to be created.
+        Filefile file name that needs to be created.
     dirname : str, optional
         Target directory name where the file should be created, by default ".".
 
@@ -146,7 +146,7 @@ class CLI:
 
         return parser
 
-    def error_handlers(
+    def handle_argerr(
         self,
         parser: argparse.ArgumentParser,
         args: argparse.Namespace,
@@ -180,6 +180,19 @@ class CLI:
                         "Run rubric --list to see the allowed filenames"
                     )
 
+    def run_target(
+        self,
+        parser: argparse.ArgumentParser,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        """Run the `consumer` function."""
+
+        try:
+            asyncio.run(self.func(*args, **kwargs))
+        except FileNotFoundError:
+            parser.error("invalid directory name")
+
     def entrypoint(self, argv: list[str] | None = None) -> None:
         self.header
         parser = self.build_parser()
@@ -192,7 +205,7 @@ class CLI:
             args = parser.parse_args(argv)
 
         # Handling pesky argument inconsistency errors.
-        self.error_handlers(parser, args)
+        self.handle_argerr(parser, args)
 
         filtered_filenames = self.filenames
         overwrite = args.overwrite
@@ -206,12 +219,12 @@ class CLI:
 
         if args.run == "run":
             if args.overwrite:
-                asyncio.run(
-                    self.func(args.dirname, filtered_filenames, overwrite=True),
+                self.run_target(
+                    parser, args.dirname, filtered_filenames, overwrite=True
                 )
             else:
-                asyncio.run(
-                    self.func(args.dirname, filtered_filenames, overwrite=False),
+                self.run_target(
+                    parser, args.dirname, filtered_filenames, overwrite=False
                 )
 
 
