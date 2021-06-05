@@ -138,16 +138,23 @@ class CLI:
         args: argparse.Namespace,
     ) -> None:
 
-        if args.list and args.run:
-            parser.error("argument `list` and `run` cannot be used together")
+        combinations = (
+            args.list and args.dirname != "." and args.overwrite,
+            args.list and args.dirname != "." and args.run,
+            args.list and args.overwrite and args.run,
+            args.list and args.overwrite,
+            args.list and args.run,
+            args.dirname != "." and args.overwrite,
+        )
 
-        if args.list and args.overwrite:
-            parser.error("argument `list` and `overwrite` cannot be used together")
+        for combination in combinations:
+            if combination:
+                parser.error("argument combination not allowed")
 
         if args.overwrite and not args.run:
             parser.error("argument `overwrite` cannot be used without argument `run`")
 
-        if args.dirname and not args.run:
+        if args.dirname and not args.run and not args.list:
             parser.error("argument `dirname` cannot be used without argument `run`")
 
         if args.overwrite and args.overwrite != ["all"]:
@@ -174,10 +181,14 @@ class CLI:
         self.error_handlers(parser, args)
 
         filtered_filenames = self.filenames
-
         overwrite = args.overwrite
         if overwrite and overwrite != ["all"]:
             filtered_filenames = overwrite
+
+        if args.list:
+            print("config files that are about to be generated:\n")
+            for filename in filtered_filenames:
+                print(f"=> {filename}")
 
         if args.run == "run":
             if args.overwrite:
@@ -188,11 +199,6 @@ class CLI:
                 asyncio.run(
                     self.func(args.dirname, filtered_filenames, overwrite=False),
                 )
-
-        if args.list:
-            print("config files that are about to be generated:\n")
-            for filename in filtered_filenames:
-                print(f"=> {filename}")
 
 
 def cli_entrypoint(argv: list[str] | None = None) -> None:
