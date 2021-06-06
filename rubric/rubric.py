@@ -8,8 +8,6 @@ from collections.abc import Callable, Coroutine, Iterable
 from pathlib import Path
 from typing import Any
 
-import aiofiles
-
 FILENAMES = (
     ".flake8",
     ".gitignore",
@@ -24,20 +22,38 @@ FILENAMES = (
 )
 
 
-async def create_file(
+def _copy_over(src_fname: str, dst_fname: str) -> None:
+    """
+    This function takes a `src_fname` and a `dst_fname`.
+    First, it searches in the `rubric` directory to check if there is
+    a file exists with the same name. If the file exists, it creates
+    another file as `dst_fname` and copies over the content
+    of the source file.
+    """
+
+    # We use importlib here so that we don't have to deal with making
+    # sure Python can find the `rubric` directory when this is installed
+    # as a CLI.
+    with importlib.resources.open_text("rubric.files", src_fname) as src_file:
+        with open(dst_fname, "w+") as dst_file:
+            print(f"Creating {src_fname}...")
+            dst_file.write(src_file.read())
+
+
+async def copy_over(
     filename: str,
     dirname: str = ".",
     overwrite: bool = False,
 ) -> None:
     """
-    Creates a file and copies the contents of the file
-    having the same name in the `rsrc` directory.
+    Creates a file in the provided directory and copies the contents
+    of file file having the same name in the `rubric` directory.
 
     Parameters
     ----------
-    file_name : str
+    filename : str
         File name that needs to be created.
-    dir_name : str, optional
+    dirname : str, optional
         Target directory name where the file should be created, by default ".".
 
     """
@@ -45,18 +61,16 @@ async def create_file(
     if dirname:
         dirname = dirname.rstrip("/")
 
+    dst_filepath = f"{dirname}/{filename}"
+
     # Do nothing, if the file already exists.
     if not overwrite:
-        if Path(f"{dirname}/{filename}").exists():
+        if Path(dst_filepath).exists():
             print(f"File {filename} already exists, skipping...")
             return
 
-    dst_filepath = f"{dirname}/{filename}"
-
-    with importlib.resources.open_text("rubric", filename) as src_file:
-        async with aiofiles.open(dst_filepath, "w+") as dst_file:
-            print(f"Creating {filename}...")
-            await dst_file.write(src_file.read())
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, _copy_over, filename, dst_filepath)
 
 
 async def consumer(
@@ -72,7 +86,7 @@ async def consumer(
     dir_name : str
         Target directory name where the file should be created.
     """
-    tasks = [create_file(filename, dirname, overwrite) for filename in filenames]
+    tasks = [copy_over(filename, dirname, overwrite) for filename in filenames]
 
     await asyncio.gather(*tasks)
 
