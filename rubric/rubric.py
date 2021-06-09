@@ -8,6 +8,8 @@ from collections.abc import Callable, Coroutine, Iterable
 from pathlib import Path
 from typing import Any
 
+import pkg_resources
+
 FILENAMES = (
     ".flake8",
     ".gitignore",
@@ -126,22 +128,31 @@ class CLI:
             nargs="?",
         )
         parser.add_argument(
+            "-l",
             "--list",
             help="list the config files that are about to be generated",
             action="store_true",
         )
         parser.add_argument(
+            "-d",
             "--dirname",
             help="target directory name",
-            default=".",
         )
         parser.add_argument(
+            "-o",
             "--overwrite",
             help=(
                 "overwrite existing config files, "
                 "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
             ),
             nargs="+",
+        )
+
+        parser.add_argument(
+            "-v",
+            "--version",
+            help="display the version number",
+            action="store_true",
         )
 
         return parser
@@ -152,24 +163,20 @@ class CLI:
         args: argparse.Namespace,
     ) -> None:
 
-        combinations = (
-            args.list and args.dirname != "." and args.overwrite,
-            args.list and args.dirname != "." and args.run,
-            args.list and args.overwrite and args.run,
-            args.list and args.overwrite,
-            args.list and args.run,
-            args.dirname != "." and args.overwrite,
-        )
-
-        for combination in combinations:
-            if combination:
-                parser.error("argument combination not allowed")
-
         if args.overwrite and not args.run:
-            parser.error("argument `overwrite` cannot be used without argument `run`")
+            parser.error("'-o/--overwrite' cannot be used without 'run'")
 
-        if args.dirname and not args.run and not args.list:
-            parser.error("argument `dirname` cannot be used without argument `run`")
+        if args.dirname and not args.run:
+            parser.error("'-d/--dirname' cannot be used without 'run'")
+
+        if args.list and args.run:
+            parser.error("'-l/--list' and 'run' cannot be used together")
+
+        if args.list and args.version:
+            parser.error("'-l/--list' and '-v/--version' cannot be used together")
+
+        if args.version and args.run:
+            parser.error("'-v/--version' and 'run' cannot be used together")
 
         if args.overwrite and args.overwrite != ["all"]:
             filtered_filenames = args.overwrite
@@ -179,6 +186,9 @@ class CLI:
                         f"filename {filtered_filename} is not valid\n"
                         "Run rubric --list to see the allowed filenames"
                     )
+        if args.version:
+            __version__ = pkg_resources.get_distribution("rubric").version
+            print(f"version: {__version__}")
 
     def run_target(
         self,
@@ -194,6 +204,7 @@ class CLI:
             parser.error("invalid directory name")
 
     def entrypoint(self, argv: list[str] | None = None) -> None:
+        # Print the nice rubric header.
         self.header
         parser = self.build_parser()
 
@@ -207,11 +218,19 @@ class CLI:
         # Handling pesky argument inconsistency errors.
         self.handle_argerr(parser, args)
 
+        # Parsing the arguments.
         filtered_filenames = self.filenames
         overwrite = args.overwrite
         if overwrite and overwrite != ["all"]:
             filtered_filenames = overwrite
 
+        _dirname = args.dirname
+        if _dirname:
+            dirname = _dirname
+        else:
+            dirname = "."
+
+        # Actions based on the CLI arguments.
         if args.list:
             print("config files that are about to be generated:\n")
             for filename in filtered_filenames:
@@ -220,11 +239,17 @@ class CLI:
         if args.run == "run":
             if args.overwrite:
                 self.run_target(
-                    parser, args.dirname, filtered_filenames, overwrite=True
+                    parser,
+                    dirname,
+                    filtered_filenames,
+                    overwrite=True,
                 )
             else:
                 self.run_target(
-                    parser, args.dirname, filtered_filenames, overwrite=False
+                    parser,
+                    dirname,
+                    filtered_filenames,
+                    overwrite=False,
                 )
 
 

@@ -60,13 +60,14 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
+    $ rubric
+
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric [-h] [--list] [--dirname DIRNAME] [--overwrite OVERWRITE [OVERWRITE ...]]
-                [run]
+    usage: rubric [-h] [-l] [-d DIRNAME] [-o OVERWRITE [OVERWRITE ...]] [-v] [run]
 
     Rubric -- Initialize your Python project ⚙️
 
@@ -75,13 +76,16 @@ The files will contain minimal but sensible default configurations for the respe
 
     optional arguments:
     -h, --help            show this help message and exit
-    --list                list the config files that are about to be generated
-    --dirname DIRNAME     target directory name
-    --overwrite OVERWRITE [OVERWRITE ...]
+    -l, --list            list the config files that are about to be generated
+    -d DIRNAME, --dirname DIRNAME
+                            target directory name
+    -o OVERWRITE [OVERWRITE ...], --overwrite OVERWRITE [OVERWRITE ...]
                             overwrite existing config files, allowed values are: all, .flake8,
                             .gitignore, README.md, makefile, mypy.ini, pyproject.toml,
                             requirements-dev.in, requirements-dev.txt, requirements.in,
                             requirements.txt
+    -v, --version         display the version number
+
     ```
 
 * Initialize a project with the following command:
