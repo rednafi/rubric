@@ -15,7 +15,6 @@ FILENAMES = (
     ".gitignore",
     "README.md",
     "makefile",
-    "mypy.ini",
     "pyproject.toml",
     "requirements-dev.in",
     "requirements-dev.txt",

@@ -55,7 +55,7 @@ mypy: ## Apply mypy
 	@echo "Applying mypy..."
 	@echo "================="
 	@echo
-	@mypy $(path)
+	@echo y | mypy --install-types $(path)
 
 
 .PHONY: trim-imports

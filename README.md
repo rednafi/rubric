@@ -23,16 +23,15 @@ Following is a list of config files that Rubric is going to add to your director
 
 ```
 root
-├── .flake8                  # Config file for .flake8
-├── .gitignore               # Python specific .gitignore file
-├── makefile                 # Makefile containing the commands to lint your code
-├── mypy.ini                 # Config file for mypy type checker
-├── pyproject.toml           # Toml file to hold a few common config vars
-├── README.md                # A readme boilerplate
-├── requirements-dev.in      # File to specify the top level dev requirements
-├── requirements-dev.txt     # File to specify the dev requirements
-├── requirements.in          # File to specify the top level app requirements
-└── requirements.txt         # File to specify the pinned app requirements
+├── .flake8                #` Config file for .flake8
+├── .gitignore             #` Python specific .gitignore file
+├── makefile               #` Makefile containing the commands to lint your code
+├── pyproject.toml         #` Toml file to with the configs for mypy, black & isort
+├── README.md              #` A readme boilerplate
+├── requirements-dev.in    #` File to specify the top level dev requirements
+├── requirements-dev.txt   #` File to specify the dev requirements
+├── requirements.in        #` File to specify the top level app requirements
+└── requirements.txt       #` File to specify the pinned app requirements
 ```
 
 The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
@@ -81,11 +80,17 @@ The files will contain minimal but sensible default configurations for the respe
                             target directory name
     -o OVERWRITE [OVERWRITE ...], --overwrite OVERWRITE [OVERWRITE ...]
                             overwrite existing config files, allowed values are: all, .flake8,
-                            .gitignore, README.md, makefile, mypy.ini, pyproject.toml,
-                            requirements-dev.in, requirements-dev.txt, requirements.in,
-                            requirements.txt
+                            .gitignore, README.md, makefile, pyproject.toml,
+                            requirements-dev.in, requirements-dev.txt, requirements.in, requirements.txt
     -v, --version         display the version number
 
+    ```
+* Take a peek into the config files that are going to be created:
+
+    ```
+    rubric --list
+    ```
+    ```
     ```
 
 * Initialize a project with the following command:

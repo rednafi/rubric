@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rubric"
-version = "0.2.5"
+version = "0.2.6"
 description = "Initialize your Python project with all the linting boilerplates you need"
 authors = ["rednafi <redowan.nafi@gmail.com>"]
 license = "MIT"
@@ -23,7 +23,7 @@ python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-mypy = "^0.812"
+mypy = "^0.902"
 isort = "^5.8.0"
 pytest-asyncio = "^0.15.1"
 flake8 = "^3.9.2"
@@ -39,13 +39,28 @@ rubric = "rubric.rubric:cli_entrypoint"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-
+# Linter configuruation.
 [tool.isort]
-profile="black"
-atomic=true
-extend_skip_glob="migrations,scripts"
-line_length=88
+profile = "black"
+atomic = true
+extend_skip_glob = "migrations,scripts"
+line_length = 88
 
 
 [tool.black]
-extend-exclude="migrations,scripts"
+extend-exclude = "migrations,scripts"
+
+
+[tool.mypy]
+follow_imports = "skip"
+ignore_missing_imports = true
+warn_no_return = false
+warn_unused_ignores = true
+allow_untyped_globals = true
+allow_redefinition = true
+pretty = true
+
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
