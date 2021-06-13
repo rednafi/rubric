@@ -38,7 +38,6 @@ jobs:
           poetry run isort --check .
           poetry run flake8 .
           echo y | poetry run mypy --install-types
-          poetry run mypy . --cache-dir=/dev/null --no-incremental
 
       - name: Run Tests
         run: |
