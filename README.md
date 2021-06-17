@@ -59,14 +59,16 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-    $ rubric
+rubric
 
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric [-h] [-l] [-d DIRNAME] [-o OVERWRITE [OVERWRITE ...]] [-v] [run]
+    usage: rubric [-h] [-l] [-d DIRNAME] [-o OVERWRITE [OVERWRITE ...]]
+                [-a APPEND [APPEND ...]] [-v]
+                [run]
 
     Rubric -- Initialize your Python project ⚙️
 
@@ -80,10 +82,13 @@ The files will contain minimal but sensible default configurations for the respe
                             target directory name
     -o OVERWRITE [OVERWRITE ...], --overwrite OVERWRITE [OVERWRITE ...]
                             overwrite existing config files, allowed values are: all, .flake8,
-                            .gitignore, README.md, makefile, pyproject.toml,
-                            requirements-dev.in, requirements-dev.txt, requirements.in, requirements.txt
+                            .gitignore, README.md, makefile, pyproject.toml, requirements-
+                            dev.in, requirements-dev.txt, requirements.in, requirements.txt
+    -a APPEND [APPEND ...], --append APPEND [APPEND ...]
+                            append to existing config files, allowed values are: all, .flake8,
+                            .gitignore, README.md, makefile, pyproject.toml, requirements-
+                            dev.in, requirements-dev.txt, requirements.in, requirements.txt
     -v, --version         display the version number
-
     ```
 * Take a peek into the config files that are going to be created:
 
@@ -113,13 +118,19 @@ The files will contain minimal but sensible default configurations for the respe
 
     This will run the tool in a non-destructive way—that means it won't overwrite any of the configuration files that you might have in the directory.
 
-    If you want to overwrite any of the existing config files that you might have in the directory, then run:
+* If you want to overwrite any of the existing config files that you might have in the directory, then run:
 
     ```
     rubric run --overwrite filename1 filename2
     ```
 
-    You can also point Rubric to a directory.
+* If you want to append the configs to an existing file, then run:
+
+    ```
+    rubric run --append filename1 filename2
+    ```
+
+* You can also point Rubric to a directory.
 
     ```
     rubric run --directory "some/custom/directory"

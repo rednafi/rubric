@@ -4,7 +4,7 @@ import argparse
 import asyncio
 import importlib.resources
 import sys
-from collections.abc import Callable, Coroutine, Iterable
+from collections.abc import Callable, Coroutine
 from pathlib import Path
 from typing import Any
 
@@ -23,71 +23,84 @@ FILENAMES = (
 )
 
 
-def _copy_over(src_fname: str, dst_fname: str) -> None:
+def _copy_over(
+    src_filename: str,
+    dst_dirname: str = ".",
+    overwrite: bool = False,
+    append: bool = False,
+) -> None:
     """
-    This function takes a `src_fname` and a `dst_fname`.
+    This function takes `src_filename` and `dst_dirname` where they mean
+    source file name and destination directory name respectively.
+
     First, it searches in the `rubric` directory to check if there is
-    a file that exists with the same name. If the file exists, it creates
-    another file as `dst_fname` and copies over the content
-    of the source file.
+    a file that exists with the same name as the `src_filename`. If the file
+    exists, it creates another file named `src_filename` in the `dst_dirname`
+    and copies over the content of the file in rubric directory.
     """
+
+    if dst_dirname:
+        dst_dirname = dst_dirname.rstrip("/")
+
+    dst_filepath = f"{dst_dirname}/{src_filename}"
+
+    # Do nothing, if the file already exists.
+    if not overwrite and not append:
+        if Path(dst_filepath).exists():
+            print(f"File {src_filename} already exists, skipping...")
+            return None
+
+    open_mode = "w+"
+    if append:
+        open_mode = "a+"
 
     # We use importlib here so that we don't have to deal with making
     # sure Python can find the `rubric` directory when this is installed
     # as a CLI.
-    with importlib.resources.open_text("rubric.files", src_fname) as src_file:
-        with open(dst_fname, "w+") as dst_file:
-            print(f"Creating {src_fname}...")
+    with importlib.resources.open_text("rubric.files", src_filename) as src_file:
+        with open(dst_filepath, open_mode) as dst_file:
+
+            if open_mode == "w+":
+                if overwrite:
+                    print(f"Overwriting {src_filename}...")
+                else:
+                    print(f"Creating {src_filename}...")
+
+            else:
+                print(f"Appending to {src_filename}...")
+
             dst_file.write(src_file.read())
 
 
 async def copy_over(
-    filename: str,
-    dirname: str = ".",
+    src_filename: str,
+    dst_dirname: str = ".",
     overwrite: bool = False,
+    append: bool = False,
 ) -> None:
     """
     Creates a file in the provided directory and copies the contents
     of the file having the same name in the `rubric` directory.
-
-    Parameters
-    ----------
-    filename : str
-        Filefile file name that needs to be created.
-    dirname : str, optional
-        Target directory name where the file should be created, by default ".".
-
     """
 
-    if dirname:
-        dirname = dirname.rstrip("/")
-
-    dst_filepath = f"{dirname}/{filename}"
-
-    # Do nothing, if the file already exists.
-    if not overwrite:
-        if Path(dst_filepath).exists():
-            print(f"File {filename} already exists, skipping...")
-            return
-
-    loop = asyncio.get_event_loop()
-    await loop.run_in_executor(None, _copy_over, filename, dst_filepath)
+    loop = asyncio.get_running_loop()
+    await loop.run_in_executor(
+        None, _copy_over, src_filename, dst_dirname, overwrite, append
+    )
 
 
 async def consumer(
-    dirname: str,
-    filenames: Iterable[str] = FILENAMES,
+    dst_dirname: str,
+    filenames: tuple[str, ...] = FILENAMES,  # Allowed filenames.
     overwrite: bool = False,
+    append: bool = False,
 ) -> None:
-    """
-    Create files defined in the `FILE_NAMES` asynchronously.
+    """Create files defined in the `FILE_NAMES` asynchronously."""
 
-    Parameters
-    ----------
-    dir_name : str
-        Target directory name where the file should be created.
-    """
-    tasks = [copy_over(filename, dirname, overwrite) for filename in filenames]
+    tasks = [
+        copy_over(src_filename, dst_dirname, overwrite, append)
+        for src_filename in filenames
+    ]
 
     await asyncio.gather(*tasks)
 
@@ -96,7 +109,7 @@ class CLI:
     def __init__(
         self,
         func: Callable[..., Coroutine[Any, Any, None]] = consumer,
-        filenames: Iterable[str] = FILENAMES,
+        filenames: tuple[str, ...] = FILENAMES,
     ) -> None:
         self.func = func
         self.filenames = filenames
@@ -148,6 +161,16 @@ class CLI:
         )
 
         parser.add_argument(
+            "-a",
+            "--append",
+            help=(
+                "append to existing config files, "
+                "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
+            ),
+            nargs="+",
+        )
+
+        parser.add_argument(
             "-v",
             "--version",
             help="display the version number",
@@ -167,6 +190,12 @@ class CLI:
 
         if args.dirname and not args.run:
             parser.error("'-d/--dirname' cannot be used without 'run'")
+
+        if args.append and not args.run:
+            parser.error("'-a/--append' cannot be used without 'run'")
+
+        if args.append and args.overwrite:
+            parser.error("'-a/--append' and '-o/--overwrite' cannot be used together")
 
         if args.list and args.run:
             parser.error("'-l/--list' and 'run' cannot be used together")
@@ -200,7 +229,7 @@ class CLI:
         try:
             asyncio.run(self.func(*args, **kwargs))
         except FileNotFoundError:
-            parser.error("invalid directory name")
+            parser.error("invalid file/directory name")
 
     def entrypoint(self, argv: list[str] | None = None) -> None:
         # Print the nice rubric header.
@@ -223,11 +252,15 @@ class CLI:
         if overwrite and overwrite != ["all"]:
             filtered_filenames = overwrite
 
+        append = args.append
+        if append and append != ["all"]:
+            filtered_filenames = append
+
         _dirname = args.dirname
         if _dirname:
-            dirname = _dirname
+            dst_dirname = _dirname
         else:
-            dirname = "."
+            dst_dirname = "."
 
         # Actions based on the CLI arguments.
         if args.list:
@@ -239,16 +272,26 @@ class CLI:
             if args.overwrite:
                 self.run_target(
                     parser,
-                    dirname,
+                    dst_dirname,
                     filtered_filenames,
                     overwrite=True,
+                    append=False,
+                )
+            elif args.append:
+                self.run_target(
+                    parser,
+                    dst_dirname,
+                    filtered_filenames,
+                    overwrite=False,
+                    append=True,
                 )
             else:
                 self.run_target(
                     parser,
-                    dirname,
+                    dst_dirname,
                     filtered_filenames,
                     overwrite=False,
+                    append=False,
                 )
 
 

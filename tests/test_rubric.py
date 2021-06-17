@@ -4,14 +4,14 @@ from rubric import rubric
 
 
 @pytest.mark.asyncio
-async def test_create_file(tmp_path):
+async def test_copy_over(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
     p = d / "pyproject.toml"
 
     # Creates a file in the temporary directory and copies the contents
     # of rubric/mypy.ini file to it
-    await rubric.copy_over("pyproject.toml", dirname=str(d))
+    await rubric.copy_over("pyproject.toml", dst_dirname=str(d))
     assert len(list(d.iterdir())) == 1
 
     # Test the content of the mypy.ini file.
@@ -20,7 +20,7 @@ async def test_create_file(tmp_path):
     # Raises filenotfound error when the target name of the file
     # doesn't exist in the rubric/ directory.
     with pytest.raises(FileNotFoundError):
-        await rubric.copy_over("pypro.toml", dirname=str(d))
+        await rubric.copy_over("pypro.toml", dst_dirname=str(d))
 
 
 @pytest.mark.asyncio
@@ -33,7 +33,7 @@ async def test_consumer(tmp_path):
     r = d / "requirements-dev.in"
 
     # This should copy all the files from rubric/ to the temporary directory.
-    await rubric.consumer(dirname=str(d), overwrite=True)
+    await rubric.consumer(dst_dirname=str(d), overwrite=True)
 
     # Check whether there are all the files in the directory.
     assert len(list(d.iterdir())) == len(rubric.FILENAMES)
