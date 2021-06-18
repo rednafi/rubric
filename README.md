@@ -1,17 +1,21 @@
+
 <div align="center">
 
 <h1>Rubric</h1>
-<strong>>> <i>Automate the boilerplate while initializing your Python project</i> <<</strong>
+<strong>>> <i>Effortless Config Initializer for Isomorphic Python Projects</i> <<</strong>
 
 &nbsp;
 
 </div>
 
-![img](https://images.unsplash.com/photo-1582184520153-cb662f665f11?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1850&q=80)
+![img](https://user-images.githubusercontent.com/30027932/122615064-b20a4500-d0a9-11eb-9011-547e7b433472.png)
+
 
 ## Preface
 
-Rubric is an opinionated project initializer for Python. It assumes that you'll use:
+Rubric is a minimalistic project initializer and configuration conformity checker that helps you initialize, maintain, and enforce the same configuration structure across multiple Python projects. It can come in handy when you're maintaining several Python projects, and you want to make sure all the linting and management workflows are isomorphic and deterministic across different repositories.
+
+It doesn't enforce any source code structure. Rather it just assumes that—you'd want to use the following tools to lint and manage your code—and adds a bunch of sensible configuration to your project's root folder:
 
 * [Black](https://github.com/psf/black) as the primary code formatter.
 * [Isort](https://github.com/PyCQA/isort) to sort the imports.
@@ -19,7 +23,7 @@ Rubric is an opinionated project initializer for Python. It assumes that you'll 
 * [Mypy](https://github.com/python/mypy) to check the type hints.
 * [Pip-tools](https://github.com/jazzband/pip-tools) to manage the dependencies.
 
-Following is a list of config files that Rubric is going to add to your directory:
+Following is a list of config files that Rubric is going to add to your target directory:
 
 ```
 root
@@ -132,6 +136,20 @@ The files will contain minimal but sensible default configurations for the respe
 
     ```
     rubric run --directory "some/custom/directory"
+    ```
+
+* If you want to check and update the configs across multiple repositories in a single sweep, use the following command:
+
+    ```
+    s="dir1 dir2 dir3"; echo $s | xargs -n 1 -P $(s | wc -w) rubric run -d
+    ```
+
+    This command will spawn 3 processes to create the config files in `dir1`, `dir2`, and `dir3` in parallel.
+
+* You can run the entire linter suite with this command:
+
+    ```
+    make lint
     ```
 
 <div align="center">
