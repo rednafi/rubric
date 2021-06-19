@@ -1,20 +1,26 @@
+from __future__ import annotations
+
+from pathlib import Path
+
 import pytest
+from _pytest.capture import CaptureFixture
 
 from rubric import rubric
 
 
 @pytest.mark.asyncio
-async def test_copy_over(tmp_path):
+async def test_copy_over_default(tmp_path: Path) -> None:
+    print(type(tmp_path))
     d = tmp_path / "dest"
     d.mkdir()
     p = d / "pyproject.toml"
 
     # Creates a file in the temporary directory and copies the contents
-    # of rubric/mypy.ini file to it
+    # of rubric/pyproject.toml file to it.
     await rubric.copy_over("pyproject.toml", dst_dirname=str(d))
     assert len(list(d.iterdir())) == 1
 
-    # Test the content of the mypy.ini file.
+    # Test the content of the pyproject.toml file.
     assert "follow_imports" and "mypy" in p.read_text()
 
     # Raises filenotfound error when the target name of the file
@@ -24,7 +30,43 @@ async def test_copy_over(tmp_path):
 
 
 @pytest.mark.asyncio
-async def test_consumer(tmp_path):
+async def test_copy_over_overwrite(tmp_path: Path) -> None:
+    d = tmp_path / "dest"
+    d.mkdir()
+    p = d / "pyproject.toml"
+
+    p.write_text("Lorem ipsum!")
+    assert "Lorem ipsum!" in p.read_text()
+
+    # Creates a file in the temporary directory and copies the contents
+    # of rubric/mypy.ini file to it
+    await rubric.copy_over("pyproject.toml", dst_dirname=str(d), overwrite=True)
+    assert len(list(d.iterdir())) == 1
+
+    assert "Lorem ipsum!" not in p.read_text()
+    assert "tool.black" in p.read_text()
+
+
+@pytest.mark.asyncio
+async def test_copy_over_append(tmp_path: Path) -> None:
+    d = tmp_path / "dest"
+    d.mkdir()
+    p = d / "pyproject.toml"
+
+    p.write_text("Lorem ipsum!")
+    assert "Lorem ipsum!" in p.read_text()
+
+    # Creates a file in the temporary directory and copies the contents
+    # of rubric/mypy.ini file to it
+    await rubric.copy_over("pyproject.toml", dst_dirname=str(d), append=True)
+    assert len(list(d.iterdir())) == 1
+
+    assert "Lorem ipsum!" in p.read_text()
+    assert "tool.black" in p.read_text()
+
+
+@pytest.mark.asyncio
+async def test_consumer(tmp_path: Path) -> None:
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -44,7 +86,7 @@ async def test_consumer(tmp_path):
     assert "pip-tools" in r.read_text()
 
 
-def test_cli_entrypoint(tmp_path, capsys):
+def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
     d = tmp_path / "dest"
     d.mkdir()
 

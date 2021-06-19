@@ -4,7 +4,7 @@ import argparse
 import asyncio
 import importlib.resources
 import sys
-from collections.abc import Callable, Coroutine
+from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any
 
@@ -112,7 +112,7 @@ async def consumer(
 class CLI:
     def __init__(
         self,
-        func: Callable[..., Coroutine[Any, Any, None]] = consumer,
+        func: Callable[..., Awaitable[None]] = consumer,
         filenames: tuple[str, ...] = FILENAMES,
     ) -> None:
         self.func = func
