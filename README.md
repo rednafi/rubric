@@ -63,14 +63,15 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
+
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric [-h] [-l] [-d DIRNAME] [-o OVERWRITE [OVERWRITE ...]]
-                [-a APPEND [APPEND ...]] [-v]
-                [run]
+    usage: rubric.py [-h] [-l] [-d DIRNAME] [-f FILENAME [FILENAME ...]]
+                    [-o OVERWRITE [OVERWRITE ...]] [-a APPEND [APPEND ...]] [-v]
+                    [run]
 
     Rubric -- Initialize your Python project ⚙️
 
@@ -82,14 +83,16 @@ The files will contain minimal but sensible default configurations for the respe
     -l, --list            list the config files that are about to be generated
     -d DIRNAME, --dirname DIRNAME
                             target directory name
+    -f FILENAME [FILENAME ...], --filename FILENAME [FILENAME ...]
+                            target file names; allowed values are: all, .flake8, .gitignore,
+                            README.md, makefile, pyproject.toml, requirements-dev.in,
+                            requirements-dev.txt, requirements.in, requirements.txt
     -o OVERWRITE [OVERWRITE ...], --overwrite OVERWRITE [OVERWRITE ...]
-                            overwrite existing config files, allowed values are: all, .flake8,
-                            .gitignore, README.md, makefile, pyproject.toml, requirements-
-                            dev.in, requirements-dev.txt, requirements.in, requirements.txt
+                            overwrite existing config files; allowed values are same as the
+                            values accepted by the '-f/--file' flag
     -a APPEND [APPEND ...], --append APPEND [APPEND ...]
-                            append to existing config files, allowed values are: all, .flake8,
-                            .gitignore, README.md, makefile, pyproject.toml, requirements-
-                            dev.in, requirements-dev.txt, requirements.in, requirements.txt
+                            append to existing config files; allowed values are same as the
+                            values accepted by the '-f/--file' flag
     -v, --version         display the version number
     ```
 * Take a peek into the config files that are going to be created:
@@ -119,6 +122,12 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     This will run the tool in a non-destructive way—that means it won't overwrite any of the configuration files that you might have in the directory.
+
+* If you only want to create a selected list of config files, then run:
+
+    ```
+    rubric run -f requirements*
+    ```
 
 * If you want to overwrite any of the existing config files that you might have in the directory, then run:
 
