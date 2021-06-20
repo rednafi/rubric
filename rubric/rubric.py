@@ -143,6 +143,7 @@ class CLI:
             help="run rubric & initialize the project scaffold",
             nargs="?",
         )
+
         parser.add_argument(
             "-l",
             "--list",
@@ -154,12 +155,25 @@ class CLI:
             "--dirname",
             help="target directory name",
         )
+
+        parser.add_argument(
+            "-f",
+            "--filename",
+            help=(
+                "target file names; "
+                "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
+            ),
+            nargs="+",
+            default=["all"],
+        )
+
         parser.add_argument(
             "-o",
             "--overwrite",
             help=(
-                "overwrite existing config files, "
-                "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
+                "overwrite existing config files; "
+                "allowed values are same as the values accepted by the "
+                "'-f/--file' flag"
             ),
             nargs="+",
         )
@@ -168,8 +182,9 @@ class CLI:
             "-a",
             "--append",
             help=(
-                "append to existing config files, "
-                "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
+                "append to existing config files; "
+                "allowed values are same as the values accepted by the "
+                "'-f/--file' flag"
             ),
             nargs="+",
         )
@@ -189,17 +204,24 @@ class CLI:
         args: argparse.Namespace,
     ) -> None:
 
-        if args.overwrite and not args.run:
-            parser.error("'-o/--overwrite' cannot be used without 'run'")
+        default = ["all"]
+        if args.filename != default and not args.run:
+            parser.error("'-f/--filename' cannot be used without 'run'")
 
         if args.dirname and not args.run:
             parser.error("'-d/--dirname' cannot be used without 'run'")
 
+        if args.overwrite and not args.run:
+            parser.error("'-o/--overwrite' cannot be used without 'run'")
+
         if args.append and not args.run:
             parser.error("'-a/--append' cannot be used without 'run'")
 
-        if args.append and args.overwrite:
-            parser.error("'-a/--append' and '-o/--overwrite' cannot be used together")
+        if args.filename != default and args.overwrite:
+            parser.error("'-f/--filename' and '-o/overwrite' cannot be used together")
+
+        if args.filename != default and args.append:
+            parser.error("'-f/--filename' and '-a/append' cannot be used together")
 
         if args.list and args.run:
             parser.error("'-l/--list' and 'run' cannot be used together")
@@ -210,14 +232,6 @@ class CLI:
         if args.version and args.run:
             parser.error("'-v/--version' and 'run' cannot be used together")
 
-        if args.overwrite and args.overwrite != ["all"]:
-            filtered_filenames = args.overwrite
-            for filtered_filename in filtered_filenames:
-                if filtered_filename not in self.filenames:
-                    parser.error(
-                        f"filename {filtered_filename} is not valid\n"
-                        "Run rubric --list to see the allowed filenames"
-                    )
         if args.version:
             __version__ = pkg_resources.get_distribution("rubric").version
             print(f"version: {__version__}")
@@ -252,6 +266,11 @@ class CLI:
 
         # Parsing the arguments.
         filtered_filenames = self.filenames
+
+        filename = args.filename
+        if filename != ["all"]:
+            filtered_filenames = filename
+
         overwrite = args.overwrite
         if overwrite and overwrite != ["all"]:
             filtered_filenames = overwrite
@@ -260,11 +279,9 @@ class CLI:
         if append and append != ["all"]:
             filtered_filenames = append
 
-        _dirname = args.dirname
-        if _dirname:
-            dst_dirname = _dirname
-        else:
-            dst_dirname = "."
+        dst_dirname = "."
+        if args.dirname:
+            dst_dirname = args.dirname
 
         # Actions based on the CLI arguments.
         if args.list:
