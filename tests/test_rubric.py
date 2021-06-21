@@ -9,7 +9,7 @@ from rubric import rubric
 
 
 @pytest.mark.asyncio
-async def test_copy_over_default(tmp_path: Path) -> None:
+async def test_copy_over(tmp_path: Path) -> None:
     print(type(tmp_path))
     d = tmp_path / "dest"
     d.mkdir()
@@ -68,12 +68,7 @@ async def test_copy_over_append(tmp_path: Path) -> None:
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "overwrite, append",
-    [
-        (False, False),
-        (True, False),
-        (False, True),
-        (True, True)
-    ],
+    [(False, False), (True, False), (False, True), (True, True)],
 )
 async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
     d = tmp_path / "dest"
@@ -93,6 +88,79 @@ async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
     assert "tool.isort" in p.read_text()
     assert "center" in q.read_text()
     assert "pip-tools" in r.read_text()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("overwrite, append", [(True, False)])
+async def test_consumer_overwrite(
+    tmp_path: Path,
+    overwrite: bool,
+    append: bool,
+) -> None:
+
+    d = tmp_path / "dest"
+    d.mkdir()
+
+    p = d / "pyproject.toml"
+    q = d / "README.md"
+    r = d / "requirements-dev.in"
+
+    p.write_text("Lorem ipsum!")
+    q.write_text("Lorem ipsum!")
+    r.write_text("Lorem ipsum!")
+
+    assert "Lorem ipsum!" in p.read_text()
+    assert "Lorem ipsum!" in q.read_text()
+    assert "Lorem ipsum!" in r.read_text()
+
+    # This should copy all the files from rubric/ to the temporary directory.
+    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
+
+    # Check whether there are all the files in the directory.
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
+
+    # Assert file contents.
+    assert "tool.isort" in p.read_text()
+    assert "center" in q.read_text()
+    assert "pip-tools" in r.read_text()
+
+    assert "Lorem ipsum!" not in p.read_text()
+    assert "Lorem ipsum!" not in q.read_text()
+    assert "Lorem ipsum!" not in r.read_text()
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("overwrite, append", [(False, True)])
+async def test_consumer_append(tmp_path: Path, overwrite: bool, append: bool) -> None:
+    d = tmp_path / "dest"
+    d.mkdir()
+
+    p = d / "pyproject.toml"
+    q = d / "README.md"
+    r = d / "requirements-dev.in"
+
+    p.write_text("Lorem ipsum!")
+    q.write_text("Lorem ipsum!")
+    r.write_text("Lorem ipsum!")
+
+    assert "Lorem ipsum!" in p.read_text()
+    assert "Lorem ipsum!" in q.read_text()
+    assert "Lorem ipsum!" in r.read_text()
+
+    # This should copy all the files from rubric/ to the temporary directory.
+    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
+
+    # Check whether there are all the files in the directory.
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
+
+    # Assert file contents.
+    assert "tool.isort" in p.read_text()
+    assert "center" in q.read_text()
+    assert "pip-tools" in r.read_text()
+
+    assert "Lorem ipsum!" in p.read_text()
+    assert "Lorem ipsum!" in q.read_text()
+    assert "Lorem ipsum!" in r.read_text()
 
 
 def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
