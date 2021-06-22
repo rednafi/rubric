@@ -66,7 +66,16 @@ async def test_copy_over_append(tmp_path: Path) -> None:
 
 
 @pytest.mark.asyncio
-async def test_consumer(tmp_path: Path) -> None:
+@pytest.mark.parametrize(
+    "overwrite, append",
+    [
+        (False, False),
+        (True, False),
+        (False, True),
+        (True, True)
+    ],
+)
+async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -75,7 +84,7 @@ async def test_consumer(tmp_path: Path) -> None:
     r = d / "requirements-dev.in"
 
     # This should copy all the files from rubric/ to the temporary directory.
-    await rubric.consumer(dst_dirname=str(d), overwrite=True)
+    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
     assert len(list(d.iterdir())) == len(rubric.FILENAMES)
