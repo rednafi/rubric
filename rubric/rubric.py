@@ -91,20 +91,36 @@ async def copy_over(
     )
 
 
-async def consumer(
+def _display(filename: str) -> None:
+    """Prints the contents of the config files."""
+
+    with importlib.resources.open_text("rubric.files", filename) as file:
+        print(f"\n{20*'='} {filename} {20*'='}\n\n", file.read(), end="", sep="")
+
+
+async def display(filename) -> None:
+    loop = asyncio.get_running_loop()
+    await loop.run_in_executor(None, _display, filename)
+
+
+async def orchestrator(
     dst_dirname: str,
     filenames: tuple[str, ...] = FILENAMES,  # Allowed filenames.
     overwrite: bool = False,
     append: bool = False,
+    show: bool = False,
 ) -> None:
-    """Creates / Overwrites / Appends to the files defined in the
+    """Diplays / Creates / Overwrites / Appends to the files defined in the
     `FILE_NAMES` asynchronously.
     """
 
-    tasks = [
-        copy_over(src_filename, dst_dirname, overwrite, append)
-        for src_filename in filenames
-    ]
+    if show:
+        tasks = [display(filename) for filename in filenames]
+    else:
+        tasks = [
+            copy_over(src_filename, dst_dirname, overwrite, append)
+            for src_filename in filenames
+        ]
 
     await asyncio.gather(*tasks)
 
@@ -112,7 +128,7 @@ async def consumer(
 class CLI:
     def __init__(
         self,
-        func: Callable[..., Awaitable[None]] = consumer,
+        func: Callable[..., Awaitable[None]] = orchestrator,
         filenames: tuple[str, ...] = FILENAMES,
     ) -> None:
         self.func = func
@@ -190,6 +206,17 @@ class CLI:
         )
 
         parser.add_argument(
+            "-s",
+            "--show",
+            help=(
+                "display the contents of the config files; "
+                "allowed values are same as the values accepted by the "
+                "'-f/--file' flag"
+            ),
+            nargs="+",
+        )
+
+        parser.add_argument(
             "-v",
             "--version",
             help="display the version number",
@@ -226,11 +253,20 @@ class CLI:
         if args.list and args.run:
             parser.error("'-l/--list' and 'run' cannot be used together")
 
-        if args.list and args.version:
-            parser.error("'-l/--list' and '-v/--version' cannot be used together")
+        if args.show and args.run:
+            parser.error("'-s/--show' and 'run' cannot be used together")
 
         if args.version and args.run:
             parser.error("'-v/--version' and 'run' cannot be used together")
+
+        if args.list and args.version:
+            parser.error("'-l/--list' and '-v/--version' cannot be used together")
+
+        if args.list and args.show:
+            parser.error("'-l/--list' and '-s/--show' cannot be used together")
+
+        if args.version and args.show:
+            parser.error("'-v/--version' and '-s/--show' cannot be used together")
 
         if args.version:
             __version__ = pkg_resources.get_distribution("rubric").version
@@ -267,6 +303,10 @@ class CLI:
         # Parsing the arguments.
         filtered_filenames = self.filenames
 
+        show = args.show
+        if show and show != ["all"]:
+            filtered_filenames = show
+
         filename = args.filename
         if filename != ["all"]:
             filtered_filenames = filename
@@ -289,6 +329,9 @@ class CLI:
             for filename in filtered_filenames:
                 print(f"=> {filename}")
 
+        if args.show:
+            self.run_target(parser, dst_dirname, filtered_filenames, show=True)
+
         if args.run == "run":
             if args.overwrite:
                 self.run_target(
@@ -296,14 +339,12 @@ class CLI:
                     dst_dirname,
                     filtered_filenames,
                     overwrite=True,
-                    append=False,
                 )
             elif args.append:
                 self.run_target(
                     parser,
                     dst_dirname,
                     filtered_filenames,
-                    overwrite=False,
                     append=True,
                 )
             else:
@@ -311,8 +352,6 @@ class CLI:
                     parser,
                     dst_dirname,
                     filtered_filenames,
-                    overwrite=False,
-                    append=False,
                 )
 
 

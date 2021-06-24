@@ -79,7 +79,7 @@ async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
     r = d / "requirements-dev.in"
 
     # This should copy all the files from rubric/ to the temporary directory.
-    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
+    await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
     assert len(list(d.iterdir())) == len(rubric.FILENAMES)
@@ -114,7 +114,7 @@ async def test_consumer_overwrite(
     assert "Lorem ipsum!" in r.read_text()
 
     # This should copy all the files from rubric/ to the temporary directory.
-    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
+    await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
     assert len(list(d.iterdir())) == len(rubric.FILENAMES)
@@ -148,7 +148,7 @@ async def test_consumer_append(tmp_path: Path, overwrite: bool, append: bool) ->
     assert "Lorem ipsum!" in r.read_text()
 
     # This should copy all the files from rubric/ to the temporary directory.
-    await rubric.consumer(dst_dirname=str(d), overwrite=overwrite, append=append)
+    await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
     assert len(list(d.iterdir())) == len(rubric.FILENAMES)
