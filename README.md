@@ -63,15 +63,15 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-
            ___       __       _
           / _ \__ __/ /  ____(_)___
          / , _/ // / _ \/ __/ / __/
         /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric.py [-h] [-l] [-d DIRNAME] [-f FILENAME [FILENAME ...]]
-                    [-o OVERWRITE [OVERWRITE ...]] [-a APPEND [APPEND ...]] [-v]
-                    [run]
+    usage: rubric [-h] [-l] [-d DIRNAME] [-f FILENAME [FILENAME ...]]
+                [-o OVERWRITE [OVERWRITE ...]] [-a APPEND [APPEND ...]] [-s SHOW [SHOW ...]]
+                [-v]
+                [run]
 
     Rubric -- Initialize your Python project ⚙️
 
@@ -93,9 +93,13 @@ The files will contain minimal but sensible default configurations for the respe
     -a APPEND [APPEND ...], --append APPEND [APPEND ...]
                             append to existing config files; allowed values are same as the
                             values accepted by the '-f/--file' flag
+    -s SHOW [SHOW ...], --show SHOW [SHOW ...]
+                            display the contents of the config files; allowed values are same
+                            as the values accepted by the '-f/--file' flag
     -v, --version         display the version number
     ```
-* Take a peek into the config files that are going to be created:
+
+* Display a list of config files that are going to be created:
 
     ```
     rubric --list
@@ -114,6 +118,57 @@ The files will contain minimal but sensible default configurations for the respe
     => requirements.in
     => requirements.txt
     ```
+
+* Take a peek into the content of any config file(s):
+    ```
+    rubric --show .flake8 requirements-dev.in
+    ```
+
+    This will print:
+
+    ```
+           ___       __       _
+          / _ \__ __/ /  ____(_)___
+         / , _/ // / _ \/ __/ / __/
+        /_/|_|\_,_/_.__/_/ /_/\__/
+
+
+    ==================== .flake8 ====================
+
+    [flake8]
+    extend-exclude =
+        .git,
+        __pycache__,
+        docs/source/conf.py,
+        old,
+        build,
+        dist,
+        .venv,
+        venv
+
+    extend-ignore = E203, E266, E501, W605
+
+    # Black's default line length.
+    max-line-length = 88
+
+    max-complexity = 18
+
+    # Specify the list of error codes you wish Flake8 to report.
+    select = B,C,E,F,W,T4,B9
+
+    # Parallelism
+    jobs = 4
+
+    ==================== requirements-dev.in ====================
+
+    black
+    isort
+    flake8
+    mypy
+    pip-tools
+
+    ```
+
 
 * Initialize a project with the following command:
 

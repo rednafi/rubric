@@ -70,7 +70,7 @@ async def test_copy_over_append(tmp_path: Path) -> None:
     "overwrite, append",
     [(False, False), (True, False), (False, True), (True, True)],
 )
-async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
+async def test_orcherstrator(tmp_path: Path, overwrite: bool, append: bool) -> None:
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -92,7 +92,7 @@ async def test_consumer(tmp_path: Path, overwrite: bool, append: bool) -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(True, False)])
-async def test_consumer_overwrite(
+async def test_orcherstrator_overwrite(
     tmp_path: Path,
     overwrite: bool,
     append: bool,
@@ -131,7 +131,9 @@ async def test_consumer_overwrite(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(False, True)])
-async def test_consumer_append(tmp_path: Path, overwrite: bool, append: bool) -> None:
+async def test_orcherstrator_append(
+    tmp_path: Path, overwrite: bool, append: bool
+) -> None:
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -161,6 +163,22 @@ async def test_consumer_append(tmp_path: Path, overwrite: bool, append: bool) ->
     assert "Lorem ipsum!" in p.read_text()
     assert "Lorem ipsum!" in q.read_text()
     assert "Lorem ipsum!" in r.read_text()
+
+
+@pytest.mark.asyncio
+async def test_display(capsys: CaptureFixture) -> None:
+
+    for filename in ("pyproject.toml", "README.md", "requirements-dev.in"):
+        await rubric.display(filename)
+
+    capture = capsys.readouterr()
+    out = capture.out
+
+    for tool in ("flake8", "mypy", "isort", "black"):
+        assert tool in out
+
+    assert "lorem ipsum" in out
+    assert "pip-tools" in out
 
 
 def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
