@@ -129,8 +129,6 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-
-
                     Rubric - Isomorphic Config for Your Python Project ⚙️
 
 
