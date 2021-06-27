@@ -189,5 +189,5 @@ def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
     capture = capsys.readouterr()
     out = capture.out
 
-    assert r"____(_)___" in out
+    assert r"Isomorphic" in out
     assert r"creating" or "exists" in out

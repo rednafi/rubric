@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import importlib.resources
+import shutil
 import sys
 from collections.abc import Awaitable, Callable
 from pathlib import Path
@@ -10,7 +11,7 @@ from typing import Any
 
 import pkg_resources
 
-FILENAMES = (
+FILENAMES: tuple[str, ...] = (
     ".flake8",
     ".gitignore",
     "README.md",
@@ -21,6 +22,8 @@ FILENAMES = (
     "requirements.in",
     "requirements.txt",
 )
+
+TERMINAL_COLUMN_SIZE: int = shutil.get_terminal_size().columns
 
 
 def _copy_over(
@@ -95,7 +98,15 @@ def _display(filename: str) -> None:
     """Prints the contents of the config files."""
 
     with importlib.resources.open_text("rubric.files", filename) as file:
-        print(f"\n{20*'='} {filename} {20*'='}\n\n", file.read(), end="", sep="")
+
+        decor = "="
+        prefix = decor * ((TERMINAL_COLUMN_SIZE - len(filename)) // 2 - 10)
+        print(
+            f"\n{prefix} {filename} {prefix}\n\n",
+            file.read(),
+            end="",
+            sep="",
+        )
 
 
 async def display(filename) -> None:
@@ -137,89 +148,100 @@ class CLI:
     @property
     def header(self):
         """CLI header class."""
+        text = "Rubric - Isomorphic Config for Your Python Project ⚙️"
 
-        # Raw string to escape a few string formatting errors.
         print(
-            r"""
-           ___       __       _
-          / _ \__ __/ /  ____(_)___
-         / , _/ // / _ \/ __/ / __/
-        /_/|_|\_,_/_.__/_/ /_/\__/
-        """
+            "\n",
+            "\033[1m",
+            text.center(TERMINAL_COLUMN_SIZE - 11),
+            "\033[0m",
+            end="\n\n",
         )
 
     def build_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
-            description="\nRubric -- Initialize your Python project ⚙️\n",
+            formatter_class=argparse.RawTextHelpFormatter,
+            add_help=False,
+        )
+
+        # Add arguments.
+        parser.add_argument(
+            "-h",
+            "--help",
+            action="help",
+            default=argparse.SUPPRESS,
+            help="Show this help message and exit.",
         )
 
         # Add arguments.
         parser.add_argument(
             "run",
-            help="run rubric & initialize the project scaffold",
+            help="Run rubric & initialize the project scaffold.",
             nargs="?",
         )
 
         parser.add_argument(
             "-l",
             "--list",
-            help="list the config files that are about to be generated",
+            help="List the config files that are about to be generated.",
             action="store_true",
         )
         parser.add_argument(
             "-d",
             "--dirname",
-            help="target directory name",
+            help="Target directory name.",
+            metavar="",
         )
 
         parser.add_argument(
             "-f",
             "--filename",
             help=(
-                "target file names; "
-                "allowed values are: all, " + ", ".join(str(x) for x in self.filenames)
+                "Target file names. Allowed values are: \n"
+                "all, \n" + ", \n".join(str(x) for x in self.filenames)
             ),
             nargs="+",
             default=["all"],
+            metavar="",
         )
 
         parser.add_argument(
             "-o",
             "--overwrite",
             help=(
-                "overwrite existing config files; "
-                "allowed values are same as the values accepted by the "
-                "'-f/--file' flag"
+                "Overwrite existing config files. Allowed values are the \n"
+                "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
+            metavar="",
         )
 
         parser.add_argument(
             "-a",
             "--append",
             help=(
-                "append to existing config files; "
-                "allowed values are same as the values accepted by the "
-                "'-f/--file' flag"
+                "Append to existing config files. Allowed values are the \n"
+                "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
+            metavar="",
         )
 
         parser.add_argument(
             "-s",
             "--show",
             help=(
-                "display the contents of the config files; "
-                "allowed values are same as the values accepted by the "
-                "'-f/--file' flag"
+                "Display the config file contents. Allowed values are the \n"
+                "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
+            metavar="",
         )
 
         parser.add_argument(
             "-v",
             "--version",
-            help="display the version number",
+            help="Display the version number.",
             action="store_true",
         )
 
@@ -325,7 +347,7 @@ class CLI:
 
         # Actions based on the CLI arguments.
         if args.list:
-            print("config files that are about to be generated:\n")
+            print("Config files that are about to be generated:\n")
             for filename in filtered_filenames:
                 print(f"=> {filename}")
 

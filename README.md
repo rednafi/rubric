@@ -63,40 +63,40 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-           ___       __       _
-          / _ \__ __/ /  ____(_)___
-         / , _/ // / _ \/ __/ / __/
-        /_/|_|\_,_/_.__/_/ /_/\__/
 
-    usage: rubric [-h] [-l] [-d DIRNAME] [-f FILENAME [FILENAME ...]]
-                [-o OVERWRITE [OVERWRITE ...]] [-a APPEND [APPEND ...]] [-s SHOW [SHOW ...]]
-                [-v]
-                [run]
+                    Rubric - Isomorphic Config for Your Python Project ⚙️
 
-    Rubric -- Initialize your Python project ⚙️
+    usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]] [-v] [run]
 
     positional arguments:
-    run                   run rubric & initialize the project scaffold
+    run                   Run rubric & initialize the project scaffold.
 
     optional arguments:
-    -h, --help            show this help message and exit
-    -l, --list            list the config files that are about to be generated
-    -d DIRNAME, --dirname DIRNAME
-                            target directory name
-    -f FILENAME [FILENAME ...], --filename FILENAME [FILENAME ...]
-                            target file names; allowed values are: all, .flake8, .gitignore,
-                            README.md, makefile, pyproject.toml, requirements-dev.in,
-                            requirements-dev.txt, requirements.in, requirements.txt
-    -o OVERWRITE [OVERWRITE ...], --overwrite OVERWRITE [OVERWRITE ...]
-                            overwrite existing config files; allowed values are same as the
-                            values accepted by the '-f/--file' flag
-    -a APPEND [APPEND ...], --append APPEND [APPEND ...]
-                            append to existing config files; allowed values are same as the
-                            values accepted by the '-f/--file' flag
-    -s SHOW [SHOW ...], --show SHOW [SHOW ...]
-                            display the contents of the config files; allowed values are same
-                            as the values accepted by the '-f/--file' flag
-    -v, --version         display the version number
+    -h, --help            Show this help message and exit.
+    -l, --list            List the config files that are about to be generated.
+    -d , --dirname        Target directory name.
+    -f  [ ...], --filename  [ ...]
+                            Target file names. Allowed values are:
+                            all,
+                            .flake8,
+                            .gitignore,
+                            README.md,
+                            makefile,
+                            pyproject.toml,
+                            requirements-dev.in,
+                            requirements-dev.txt,
+                            requirements.in,
+                            requirements.txt
+    -o  [ ...], --overwrite  [ ...]
+                            Overwrite existing config files. Allowed values are the
+                            same as the values accepted by the '-f/--file' flag.
+    -a  [ ...], --append  [ ...]
+                            Append to existing config files. Allowed values are the
+                            same as the values accepted by the '-f/--file' flag.
+    -s  [ ...], --show  [ ...]
+                            Display the config file contents. Allowed values are the
+                            same as the values accepted by the '-f/--file' flag.
+    -v, --version         Display the version number.
     ```
 
 * Display a list of config files that are going to be created:
@@ -106,7 +106,9 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-    config files that are about to be generated:
+                    Rubric - Isomorphic Config for Your Python Project ⚙️
+
+    Config files that are about to be generated:
 
     => .flake8
     => .gitignore
@@ -127,13 +129,12 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-           ___       __       _
-          / _ \__ __/ /  ____(_)___
-         / , _/ // / _ \/ __/ / __/
-        /_/|_|\_,_/_.__/_/ /_/\__/
 
 
-    ==================== .flake8 ====================
+                    Rubric - Isomorphic Config for Your Python Project ⚙️
+
+
+    ================================= .flake8 =================================
 
     [flake8]
     extend-exclude =
@@ -159,14 +160,13 @@ The files will contain minimal but sensible default configurations for the respe
     # Parallelism
     jobs = 4
 
-    ==================== requirements-dev.in ====================
+    =========================== requirements-dev.in ===========================
 
     black
     isort
     flake8
     mypy
     pip-tools
-
     ```
 
 
