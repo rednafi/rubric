@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "rubric"
 version = "0.3.3"
-description = "Initialize your Python project with all the linting boilerplates you need"
+description = "Rubric - Isomorphic Config for Your Python Project ⚙️"
 authors = ["rednafi <redowan.nafi@gmail.com>"]
 license = "MIT"
 readme = "README.md"
