@@ -15,7 +15,7 @@ FILENAMES: tuple[str, ...] = (
     ".flake8",
     ".gitignore",
     "README.md",
-    "makefile",
+    "Makefile",
     "pyproject.toml",
     "requirements-dev.in",
     "requirements-dev.txt",
