@@ -37,7 +37,7 @@ jobs:
           poetry run black --check .
           poetry run isort --check .
           poetry run flake8 .
-          echo y | poetry run mypy --install-types && poetry run mypy .
+          poetry run mypy --install-types && poetry run mypy .
 
       - name: Run Tests
         run: |
