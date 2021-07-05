@@ -76,3 +76,11 @@ dep-lock: ## Freeze deps in `requirements.txt` file
 .PHONY: dep-sync
 dep-sync: ## Sync venv installation with `requirements.txt`
 	@pip-sync
+
+
+deps:=pytest mypy isort pytest-asyncio flake8 black
+.PHONY: dep-update
+dep-update: ## Update all the dependencies to the latest version
+	@for v in $(deps) ; do \
+        poetry add $$v@latest --dev ; \
+    done

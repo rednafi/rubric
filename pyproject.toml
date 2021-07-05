@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rubric"
-version = "0.3.3"
+version = "0.3.4"
 description = "Rubric - Isomorphic Config for Your Python Project ⚙️"
 authors = ["rednafi <redowan.nafi@gmail.com>"]
 license = "MIT"
@@ -22,12 +22,12 @@ python = "^3.7"
 
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
-mypy = "^0.902"
-isort = "^5.8.0"
+pytest = "^6.2.4"
+mypy = "^0.910"
+isort = "^5.9.1"
 pytest-asyncio = "^0.15.1"
 flake8 = "^3.9.2"
-black = "^21.5b2"
+black = "^21.6b0"
 
 
 # CLI entrypoints
