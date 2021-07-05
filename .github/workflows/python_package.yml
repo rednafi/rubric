@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7 3.8 3.9]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,9 @@ jobs:
           poetry run black --check .
           poetry run isort --check .
           poetry run flake8 .
-          echo y | poetry run mypy . --install-types
+          poetry run pip install types-setuptools
+          poetry run pip install types-pkg_resources
+          poetry run mypy . --install-types
 
       - name: Run Tests
         run: |
