@@ -8,6 +8,23 @@ from _pytest.capture import CaptureFixture
 from rubric import rubric
 
 
+def test_filenames():
+    target_filenames = (
+        ".flake8",
+        ".gitignore",
+        "README.md",
+        "makefile",
+        "pyproject.toml",
+        "requirements-dev.in",
+        "requirements-dev.txt",
+        "requirements.in",
+        "requirements.txt",
+    )
+    current_filenames = rubric.FILENAMES
+
+    assert target_filenames == current_filenames
+
+
 @pytest.mark.asyncio
 async def test_copy_over(tmp_path: Path) -> None:
     print(type(tmp_path))
@@ -186,8 +203,18 @@ def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
     d.mkdir()
 
     rubric.cli_entrypoint(["run", f"--dirname={str(d)}"])
+
     capture = capsys.readouterr()
     out = capture.out
 
     assert r"Isomorphic" in out
     assert r"creating" or "exists" in out
+
+    with pytest.raises(SystemExit):
+        rubric.cli_entrypoint(["--show"])
+        rubric.cli_entrypoint(["--overwrite"])
+        rubric.cli_entrypoint(["--file"])
+
+    with pytest.raises(SystemExit):
+        with capsys.disabled():
+            rubric.cli_entrypoint(["run", "-h"])
