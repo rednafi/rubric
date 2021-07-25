@@ -63,32 +63,32 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
+                Rubric - Isomorphic Config for Your Python Project ⚙️
 
-                    Rubric - Isomorphic Config for Your Python Project ⚙️
-
-    usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]] [-v] [run]
+    usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]] [-v]  [run]
 
     positional arguments:
-    run                   Run rubric & initialize the project scaffold.
+      run                   Run rubric & initialize the project scaffold.
 
     optional arguments:
-    -h, --help            Show this help message and exit.
-    -l, --list            List the config files that are about to be generated.
-    -d , --dirname        Target directory name.
-    -f  [ ...], --filename  [ ...]
+      -h, --help            Show this help message and exit.
+      -l, --list            List the config files that are about to be generated.
+      -d , --dirname        Target directory name.
+      -f  [ ...], --filename  [ ...]
                             Target file names. Allowed values are: all, .flake8, .gitignore,
                             README.md, makefile, pyproject.toml, requirements-dev.in,
                             requirements-dev.txt, requirements.in, requirements.txt.
-    -o  [ ...], --overwrite  [ ...]
+      -o  [ ...], --overwrite  [ ...]
                             Overwrite existing config files. Allowed values are the same as the
                             values accepted by the '-f/--file' flag.
-    -a  [ ...], --append  [ ...]
+      -a  [ ...], --append  [ ...]
                             Append to existing config files. Allowed values are the same as the
                             values accepted by the '-f/--file' flag.
-    -s  [ ...], --show  [ ...]
+      -s  [ ...], --show  [ ...]
                             Display the config file contents. Allowed values are the same as
                             the values accepted by the '-f/--file' flag.
-    -v, --version         Display the version number.
+      -v, --version         Display the version number.
+
     ```
 
 * Display a list of config files that are going to be created:
