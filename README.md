@@ -76,26 +76,18 @@ The files will contain minimal but sensible default configurations for the respe
     -l, --list            List the config files that are about to be generated.
     -d , --dirname        Target directory name.
     -f  [ ...], --filename  [ ...]
-                            Target file names. Allowed values are:
-                            all,
-                            .flake8,
-                            .gitignore,
-                            README.md,
-                            makefile,
-                            pyproject.toml,
-                            requirements-dev.in,
-                            requirements-dev.txt,
-                            requirements.in,
-                            requirements.txt
+                            Target file names. Allowed values are: all, .flake8, .gitignore,
+                            README.md, makefile, pyproject.toml, requirements-dev.in,
+                            requirements-dev.txt, requirements.in, requirements.txt.
     -o  [ ...], --overwrite  [ ...]
-                            Overwrite existing config files. Allowed values are the
-                            same as the values accepted by the '-f/--file' flag.
+                            Overwrite existing config files. Allowed values are the same as the
+                            values accepted by the '-f/--file' flag.
     -a  [ ...], --append  [ ...]
-                            Append to existing config files. Allowed values are the
-                            same as the values accepted by the '-f/--file' flag.
+                            Append to existing config files. Allowed values are the same as the
+                            values accepted by the '-f/--file' flag.
     -s  [ ...], --show  [ ...]
-                            Display the config file contents. Allowed values are the
-                            same as the values accepted by the '-f/--file' flag.
+                            Display the config file contents. Allowed values are the same as
+                            the values accepted by the '-f/--file' flag.
     -v, --version         Display the version number.
     ```
 
