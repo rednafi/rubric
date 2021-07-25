@@ -160,7 +160,6 @@ class CLI:
 
     def build_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
-            formatter_class=argparse.RawTextHelpFormatter,
             add_help=False,
         )
 
@@ -197,8 +196,8 @@ class CLI:
             "-f",
             "--filename",
             help=(
-                "Target file names. Allowed values are: \n"
-                "all, \n" + ", \n".join(str(x) for x in self.filenames)
+                "Target file names. Allowed values are: "
+                f"all, {', '.join(str(x) for x in self.filenames)}."
             ),
             nargs="+",
             default=["all"],
@@ -209,7 +208,7 @@ class CLI:
             "-o",
             "--overwrite",
             help=(
-                "Overwrite existing config files. Allowed values are the \n"
+                "Overwrite existing config files. Allowed values are the "
                 "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
@@ -220,7 +219,7 @@ class CLI:
             "-a",
             "--append",
             help=(
-                "Append to existing config files. Allowed values are the \n"
+                "Append to existing config files. Allowed values are the "
                 "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
@@ -231,7 +230,7 @@ class CLI:
             "-s",
             "--show",
             help=(
-                "Display the config file contents. Allowed values are the \n"
+                "Display the config file contents. Allowed values are the "
                 "same as the values accepted by the '-f/--file' flag."
             ),
             nargs="+",
