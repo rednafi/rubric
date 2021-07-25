@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rubric"
-version = "0.3.6"
+version = "0.3.7"
 description = "Rubric - Isomorphic Config for Your Python Project ⚙️"
 authors = ["rednafi <redowan.nafi@gmail.com>"]
 license = "MIT"
