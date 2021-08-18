@@ -8,8 +8,8 @@ from _pytest.capture import CaptureFixture
 from rubric import rubric
 
 
-def test_filenames():
-    target_filenames = (
+def test_filegallery():
+    target_filenames = [
         ".flake8",
         ".gitignore",
         "README.md",
@@ -19,8 +19,8 @@ def test_filenames():
         "requirements-dev.txt",
         "requirements.in",
         "requirements.txt",
-    )
-    current_filenames = rubric.FILENAMES
+    ]
+    current_filenames = [filename for filename in rubric.FileGallery]
 
     assert target_filenames == current_filenames
 
@@ -99,7 +99,7 @@ async def test_orcherstrator(tmp_path: Path, overwrite: bool, append: bool) -> N
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
+    assert len(list(d.iterdir())) == len(rubric.FileGallery)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -134,7 +134,7 @@ async def test_orcherstrator_overwrite(
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
+    assert len(list(d.iterdir())) == len(rubric.FileGallery)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -170,7 +170,7 @@ async def test_orcherstrator_append(
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
+    assert len(list(d.iterdir())) == len(rubric.FileGallery)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
