@@ -14,8 +14,9 @@ import pkg_resources
 
 
 class FileGallery(str, Enum):
-    """An assortment of the infrastructure config files that are going to be
-    created by Rubric.
+    """
+    An assortment of the infrastructure config files that are
+    going to be created by Rubric.
     """
 
     def __new__(cls, value, description=""):
@@ -24,15 +25,15 @@ class FileGallery(str, Enum):
         obj.description = description
         return obj
 
-    FLAKE8 = ".flake8", "File containing the flake8 configs."
+    FLAKE8 = ".flake8", "File containing Flake8 configs."
     GITIGNORE = ".gitignore", "Python specific .gitignore file."
     README = "README.md", "Minimalistic readme template."
     MAKEFILE = "makefile", "Makefile containing a few orchestration commands."
-    PYPROJECT_TOML = "pyproject.toml", "Toml file containing black & mypy configs."
-    REQ_DEV_IN = "requirements-dev.in", "In file containing the top-level dev deps."
-    REQ_DEV_TXT = "requirements-dev.txt", "Txt file containing the pinned dev deps."
-    REQ_APP_IN = "requirements.in", "In file containing the top-level app deps."
-    REQ_APP_TXT = "requirements.txt", "Txt file containing the pinned app deps."
+    PYPROJECT_TOML = "pyproject.toml", "File containing black & mypy configs."
+    REQ_DEV_IN = "requirements-dev.in", "File containing the top-level dev deps."
+    REQ_DEV_TXT = "requirements-dev.txt", "File containing the pinned dev deps."
+    REQ_APP_IN = "requirements.in", "File containing the top-level app deps."
+    REQ_APP_TXT = "requirements.txt", "File containing the pinned app deps."
 
 
 TERMINAL_COLUMN_SIZE: int = shutil.get_terminal_size().columns
@@ -44,14 +45,15 @@ def _copy_over(
     overwrite: bool = False,
     append: bool = False,
 ) -> None:
+
     """
-    This function takes `src_filename` and `dst_dirname` where they mean
+    This function takes 'src_filename' and 'dst_dirname' where they mean
     source file name and destination directory name respectively.
 
-    First, it searches in the `rubric` directory to check if there is
-    a file that exists with the same name as the `src_filename`. If the file
-    exists, it creates another file named `src_filename` in the `dst_dirname`
-    and copies over the content of the file in rubric directory.
+    First, it searches in the 'rubric' directory to check if there is
+    a file that exists with the same name as the 'src_filename'. If the file
+    exists, it creates another file named 'src_filename' in the 'dst_dirname'
+    and copies over the content of the file in the 'rubric' directory.
     """
 
     if dst_dirname:
@@ -94,10 +96,10 @@ async def copy_over(
     append: bool = False,
 ) -> None:
     """
-    Creates a file named `src_file` in the `dst_dirname` directory and
-    looks into `rubric` directory to see if there is a file with the same
-    name as `src_file` exists. If the file exists then it copies the contents
-    of the file over to `dst_dirname/src_filename`.
+    Creates a file named 'src_file' in the 'dst_dirname' directory and
+    looks into the 'rubric' directory to see if there is a file with the same
+    name as 'src_file' exists. If the file exists then it copies the contents
+    of the file over to 'dst_dirname/src_filename'.
     """
 
     loop = asyncio.get_running_loop()
@@ -133,8 +135,10 @@ async def orchestrator(
     append: bool = False,
     show: bool = False,
 ) -> None:
-    """Diplays / Creates / Overwrites / Appends to the files defined in the
-    `FILE_NAMES` asynchronously.
+
+    """
+    Diplays / Creates / Overwrites / Appends to the files listed
+    in the 'FileGallery' asynchronously.
     """
 
     if show:
