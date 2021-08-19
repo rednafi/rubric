@@ -128,7 +128,7 @@ async def display(filename) -> None:
 
 async def orchestrator(
     dst_dirname: str,
-    filenames: Enum = FileGallery,  # Infra filenames.
+    filenames: type[FileGallery] = FileGallery,  # Infra filenames.
     overwrite: bool = False,
     append: bool = False,
     show: bool = False,
@@ -152,7 +152,7 @@ class CLI:
     def __init__(
         self,
         func: Callable[..., Awaitable[None]] = orchestrator,
-        filenames: Enum = FileGallery,
+        filenames: type[FileGallery] = FileGallery,
     ) -> None:
         self.func = func
         self.filenames = filenames
