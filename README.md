@@ -65,7 +65,7 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-                Rubric - Isomorphic Config for Your Python Project ⚙️
+            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
 
     usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]] [-v]  [run]
 
@@ -100,7 +100,7 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-                    Rubric - Isomorphic Config for Your Python Project ⚙️
+            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
 
     Config files that are about to be generated:
 
@@ -123,7 +123,7 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-                    Rubric - Isomorphic Config for Your Python Project ⚙️
+            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
 
 
     ================================= .flake8 =================================

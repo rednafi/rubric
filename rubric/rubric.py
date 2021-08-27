@@ -164,7 +164,7 @@ class CLI:
     @property
     def header(self):
         """CLI header class."""
-        text = "Rubric - Isomorphic Config for Your Python Project ⚙️"
+        text = "Rubric - Isomorphic Dependency & Config Management for Python ⚙️"
 
         print(
             "\n",
