@@ -2,7 +2,7 @@
 <div align="center">
 
 <h1>Rubric</h1>
-<strong>>> <i>Effortless Config Initializer for Isomorphic Python Projects</i> <<</strong>
+<strong>>> <i>Isomorphic Dependency & Configuration Management for Python Projects</i> <<</strong>
 
 &nbsp;
 
@@ -13,9 +13,11 @@
 
 ## Preface
 
-Rubric is a minimalistic project initializer and configuration conformity checker that helps you initialize, maintain, and enforce the same configuration structure across multiple Python projects. It can come in handy when you're maintaining several Python projects, and you want to make sure all the linting and management workflows are isomorphic and deterministic across different repositories.
+Rubric aims to lower the activation energy required to start a new Python project. Starting a new Python project usually entails—creating a new repo, cloning that to your local machine, creating and activating a virtual environment, manage the dependencies, adding linter configuration, and what not. Doing this over and over again in many different ways that are common in the Python ecosystem can be cumbersome. This means each of your projects will look slightly different in terms of what tools they're using to manage dependencies and how they're configured.
 
-It doesn't enforce any source code structure. Rather it just assumes that—you'd want to use the following tools to lint and manage your code—and adds a bunch of sensible configuration to your project's root folder:
+Also, if you're maintaining multiple repositories where they don't share a common structure on how they manage dependencies, configuration, linting, etc; it can go out of hand pretty quickly. Rubric can also help you make your existing projects conform to a single setup system.
+
+It doesn't enforce any source code structure. Rather it just assumes that—you'd want to use the following tools to lint and manage your code—and adds a bunch of sensible configuration files to your project's root folder:
 
 * [Black](https://github.com/psf/black) as the primary code formatter.
 * [Isort](https://github.com/PyCQA/isort) to sort the imports.
