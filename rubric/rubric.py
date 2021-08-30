@@ -9,6 +9,7 @@ from collections.abc import Awaitable, Callable
 from enum import Enum
 from pathlib import Path
 from typing import Any
+import textwrap
 
 import pkg_resources
 
@@ -164,12 +165,12 @@ class CLI:
     @property
     def header(self):
         """CLI header class."""
-        text = "Rubric - Isomorphic Dependency & Config Management for Python ⚙️"
+        ethos = "Rubric - Isomorphic Dependency & Config Management for Python ⚙️"
 
         print(
             "\n",
             "\033[1m",
-            text.center(TERMINAL_COLUMN_SIZE - 11),
+            ethos.center(TERMINAL_COLUMN_SIZE - 11),
             "\033[0m",
             end="\n\n",
         )
