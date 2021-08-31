@@ -9,7 +9,6 @@ from collections.abc import Awaitable, Callable
 from enum import Enum
 from pathlib import Path
 from typing import Any
-import textwrap
 
 import pkg_resources
 
