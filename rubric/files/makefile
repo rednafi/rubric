@@ -2,10 +2,10 @@ path := .
 
 define Comment
 	- Run `make help` to see all the available options.
-	- Run `make testall` to run all the tests.
 	- Run `make lint` to run the linter.
 	- Run `make lint-check` to check linter conformity.
-	- Run `make publish` to publish to PYPI.
+	- Run `dep-lock` to lock the deps in 'requirements.txt' and 'requirements-dev.txt'.
+	- Run `dep-sync` to sync current environment up to date with the locked deps.
 endef
 
 
@@ -69,3 +69,14 @@ help: ## Show this help message.
 .PHONY: test
 test: ## Run the tests against the current version of Python.
 	pytest
+
+
+.PHONY: dep-lock
+dep-lock: ## Freeze deps in 'requirements.txt' file.
+	@pip-compile requirements.in -o requirements.txt
+	@pip-compile requirements-dev.in -o requirements-dev.txt
+
+
+.PHONY: dep-sync
+dep-sync: ## Sync venv installation with 'requirements.txt' file.
+	@pip-sync
