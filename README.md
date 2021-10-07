@@ -208,6 +208,24 @@ The files will contain minimal but sensible default configurations for the respe
     make lint
     ```
 
+## Remote Usage
+
+You can also use Rubric without installing anything on your machine. To do so, run:
+
+```
+curl -s https://raw.githubusercontent.com/rednafi/rubric/main/remote_rubric.sh | bash
+```
+
+This will print Rubric's help message on your terminal. You can use all the Rubric flags here as well. Here's a remote workflow:
+
+```
+rubric = $(curl -s https://raw.githubusercontent.com/rednafi/rubric/main/remote_rubric.sh | bash)
+
+rubric -s requirements*
+```
+
+Take a look at the contents of the script `remote_rubric.sh` if you feel queasy about running remote scripts.
+
 <div align="center">
 <i> ✨ 🍰 ✨ </i>
 </div>
