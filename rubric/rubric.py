@@ -142,10 +142,10 @@ async def orchestrator(
     """
 
     if show:
-        tasks = [display(filename) for filename in filenames]
+        tasks = [display(filename.value) for filename in filenames]
     else:
         tasks = [
-            copy_over(src_filename, dst_dirname, overwrite, append)
+            copy_over(src_filename.value, dst_dirname, overwrite, append)
             for src_filename in filenames
         ]
 
