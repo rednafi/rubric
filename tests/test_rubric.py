@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
-from _pytest.capture import CaptureFixture
 
 from rubric import rubric
 
@@ -20,13 +17,13 @@ def test_filegallery():
         "requirements.in",
         "requirements.txt",
     ]
-    current_filenames = [filename for filename in rubric.FileGallery]
+    current_filenames = rubric.FILE_GALLERY
 
     assert target_filenames == current_filenames
 
 
 @pytest.mark.asyncio
-async def test_copy_over(tmp_path: Path) -> None:
+async def test_copy_over(tmp_path):
     print(type(tmp_path))
     d = tmp_path / "dest"
     d.mkdir()
@@ -47,7 +44,7 @@ async def test_copy_over(tmp_path: Path) -> None:
 
 
 @pytest.mark.asyncio
-async def test_copy_over_overwrite(tmp_path: Path) -> None:
+async def test_copy_over_overwrite(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
     p = d / "pyproject.toml"
@@ -65,7 +62,7 @@ async def test_copy_over_overwrite(tmp_path: Path) -> None:
 
 
 @pytest.mark.asyncio
-async def test_copy_over_append(tmp_path: Path) -> None:
+async def test_copy_over_append(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
     p = d / "pyproject.toml"
@@ -87,7 +84,7 @@ async def test_copy_over_append(tmp_path: Path) -> None:
     "overwrite, append",
     [(False, False), (True, False), (False, True), (True, True)],
 )
-async def test_orcherstrator(tmp_path: Path, overwrite: bool, append: bool) -> None:
+async def test_orcherstrator(tmp_path, overwrite, append):
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -99,7 +96,7 @@ async def test_orcherstrator(tmp_path: Path, overwrite: bool, append: bool) -> N
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FileGallery)
+    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -110,10 +107,10 @@ async def test_orcherstrator(tmp_path: Path, overwrite: bool, append: bool) -> N
 @pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(True, False)])
 async def test_orcherstrator_overwrite(
-    tmp_path: Path,
-    overwrite: bool,
-    append: bool,
-) -> None:
+    tmp_path,
+    overwrite,
+    append,
+):
 
     d = tmp_path / "dest"
     d.mkdir()
@@ -134,7 +131,7 @@ async def test_orcherstrator_overwrite(
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FileGallery)
+    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -148,9 +145,7 @@ async def test_orcherstrator_overwrite(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(False, True)])
-async def test_orcherstrator_append(
-    tmp_path: Path, overwrite: bool, append: bool
-) -> None:
+async def test_orcherstrator_append(tmp_path, overwrite, append):
     d = tmp_path / "dest"
     d.mkdir()
 
@@ -170,7 +165,7 @@ async def test_orcherstrator_append(
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FileGallery)
+    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -183,7 +178,7 @@ async def test_orcherstrator_append(
 
 
 @pytest.mark.asyncio
-async def test_display(capsys: CaptureFixture) -> None:
+async def test_display(capsys):
 
     for filename in ("pyproject.toml", "README.md", "requirements-dev.in"):
         await rubric.display(filename)
@@ -198,7 +193,7 @@ async def test_display(capsys: CaptureFixture) -> None:
     assert "pip-tools" in out
 
 
-def test_cli_entrypoint(tmp_path: Path, capsys: CaptureFixture) -> None:
+def test_cli_entrypoint(tmp_path, capsys):
     d = tmp_path / "dest"
     d.mkdir()
 

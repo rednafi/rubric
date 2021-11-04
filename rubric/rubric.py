@@ -6,35 +6,22 @@ import importlib.resources
 import shutil
 import sys
 from collections.abc import Awaitable, Callable
-from enum import Enum
 from pathlib import Path
 from typing import Any
 
 import pkg_resources
 
-
-class FileGallery(str, Enum):
-    """
-    An assortment of the infrastructure config files that are
-    going to be created by Rubric.
-    """
-
-    def __new__(cls, value, description=""):
-        obj = str.__new__(cls, value)
-        obj._value_ = value
-        obj.description = description
-        return obj
-
-    FLAKE8 = ".flake8", "File containing Flake8 configs."
-    GITIGNORE = ".gitignore", "Python specific .gitignore file."
-    README = "README.md", "Minimalistic readme template."
-    MAKEFILE = "makefile", "Makefile containing a few orchestration commands."
-    PYPROJECT_TOML = "pyproject.toml", "File containing black & mypy configs."
-    REQ_DEV_IN = "requirements-dev.in", "File containing the top-level dev deps."
-    REQ_DEV_TXT = "requirements-dev.txt", "File containing the pinned dev deps."
-    REQ_APP_IN = "requirements.in", "File containing the top-level app deps."
-    REQ_APP_TXT = "requirements.txt", "File containing the pinned app deps."
-
+FILE_GALLERY = [
+    ".flake8",
+    ".gitignore",
+    "README.md",
+    "makefile",
+    "pyproject.toml",
+    "requirements-dev.in",
+    "requirements-dev.txt",
+    "requirements.in",
+    "requirements.txt",
+]
 
 TERMINAL_COLUMN_SIZE: int = shutil.get_terminal_size().columns
 
@@ -130,7 +117,7 @@ async def display(filename) -> None:
 
 async def orchestrator(
     dst_dirname: str,
-    filenames: type[FileGallery] = FileGallery,  # Infra filenames.
+    filenames: list = FILE_GALLERY,  # Infra filenames.
     overwrite: bool = False,
     append: bool = False,
     show: bool = False,
@@ -142,10 +129,10 @@ async def orchestrator(
     """
 
     if show:
-        tasks = [display(filename.value) for filename in filenames]
+        tasks = [display(filename) for filename in filenames]
     else:
         tasks = [
-            copy_over(src_filename.value, dst_dirname, overwrite, append)
+            copy_over(src_filename, dst_dirname, overwrite, append)
             for src_filename in filenames
         ]
 
@@ -156,7 +143,7 @@ class CLI:
     def __init__(
         self,
         func: Callable[..., Awaitable[None]] = orchestrator,
-        filenames: type[FileGallery] = FileGallery,
+        filenames: list = FILE_GALLERY,
     ) -> None:
         self.func = func
         self.filenames = filenames
