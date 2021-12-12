@@ -5,9 +5,14 @@ on:
     branches:
       - main
       - dev
+
   pull_request:
     branches:
       - main
+
+  schedule:
+    # Run cron at the end of every day.
+    - cron: "0 0 * * *"
 
 jobs:
   ci:
@@ -23,13 +28,10 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements-dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          cache: "pip"
+          cache-dependency-path: |
+            "requirements.txt"
+            "requirements-dev.txt"
 
       - name: Install the Dependencies
         run: |

@@ -71,7 +71,7 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-          Rubric - Isomorphic Project Initializer for Python ⚙️
+              Rubric - Isomorphic Project Initializer for Python ⚙️
 
     usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]]
                   [-s  [...]] [-v]
@@ -115,7 +115,7 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-            Rubric - Isomorphic Project Initializer for Python ⚙️
+                Rubric - Isomorphic Project Initializer for Python ⚙️
 
     Config files that are about to be generated:
 
@@ -141,7 +141,7 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-            Rubric - Isomorphic Project Initializer for Python ⚙️
+                Rubric - Isomorphic Project Initializer for Python ⚙️
 
 
     ================================= .flake8 =================================
