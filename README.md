@@ -50,7 +50,7 @@ The files will contain minimal but sensible default configurations for the respe
 
 ## Installation
 
-* Rubric requires Python 3.7 and up.
+* Rubric requires Python 3.8 and up.
 
 * Make a virtual environment in your project's root directory.
 
