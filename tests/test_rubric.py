@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from rubric import rubric
+import rubric
 
 
 def test_filegallery():

@@ -1,0 +1,2 @@
+include rubric/files/
+exclude tests/ README.md LICENSE

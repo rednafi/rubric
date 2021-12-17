@@ -1,14 +1,5 @@
 path := .
 
-define Comment
-	- Run `make help` to see all the available options.
-	- Run `make lint` to run the linter.
-	- Run `make lint-check` to check linter conformity.
-	- Run `dep-lock` to lock the deps in 'requirements.txt' and 'requirements-dev.txt'.
-	- Run `dep-sync` to sync current environment up to date with the locked deps.
-endef
-
-
 .PHONY: lint
 lint: black isort flake mypy	## Apply all the linters.
 
@@ -82,9 +73,12 @@ dep-sync: ## Sync venv installation with 'requirements.txt' file.
 	@pip-sync
 
 
-deps:=pytest mypy isort pytest-asyncio flake8 black
-.PHONY: dep-update
-dep-update: ## Update all the dependencies to the latest version
-	@for v in $(deps) ; do \
-        poetry add $$v@latest --dev ; \
-    done
+.PHONY: build
+build: ## Build the CLI.
+	@rm -rf build/ dist/
+	@python -m build
+
+
+.PHONY: upload
+upload: build ## Build and upload to PYPI.
+	@twine upload dist/*
