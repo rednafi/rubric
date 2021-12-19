@@ -7,6 +7,7 @@ import rubric
 
 def test_filegallery():
     target_filenames = [
+        ".editorconfig",
         ".flake8",
         ".gitignore",
         "README.md",
