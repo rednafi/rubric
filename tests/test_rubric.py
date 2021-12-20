@@ -10,6 +10,7 @@ def test_filegallery():
         ".editorconfig",
         ".flake8",
         ".gitignore",
+        ".pre-commit-config.yaml",
         "README.md",
         "makefile",
         "pyproject.toml",
