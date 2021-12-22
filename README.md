@@ -21,10 +21,13 @@ It doesn't enforce any source code structure. Rather it just assumes that—you'
 
 
 * [Black](https://github.com/psf/black) as the primary code formatter.
+* [EditorConfig](https://editorconfig.org/) to enforce consistent coding styles for multiple developers.
 * [Isort](https://github.com/PyCQA/isort) to sort the imports.
 * [Flake8](https://github.com/PyCQA/flake8) to ensure style guide conformance.
 * [Mypy](https://github.com/python/mypy) to check the type hints.
 * [Pip-tools](https://github.com/jazzband/pip-tools) to manage the dependencies.
+* [Pre-commit](https://pre-commit.com/) for managing and maintaining the pre-commit hooks.
+
 
 Following is a list of config files that Rubric is going to add to your target directory:
 
@@ -66,32 +69,41 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
+            Rubric - Isomorphic Project Initializer for Python ⚙️
 
-    usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]] [-v]  [run]
+    usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]]
+                  [-s  [...]] [-v]
+                  [run]
 
     positional arguments:
-      run                   Run rubric & initialize the project scaffold.
+      run                   Run rubric & initialize the project
+                            scaffold.
 
     optional arguments:
       -h, --help            Show this help message and exit.
-      -l, --list            List the config files that are about to be generated.
+      -l, --list            List the config files that are about to
+                            be generated.
       -d , --dirname        Target directory name.
       -f  [ ...], --filename  [ ...]
-                            Target file names. Allowed values are: all, .flake8, .gitignore,
-                            README.md, makefile, pyproject.toml, requirements-dev.in,
-                            requirements-dev.txt, requirements.in, requirements.txt.
+                            Target file names. Allowed values are:
+                            all, .editorconfig, .flake8, .gitignore,
+                            .pre-commit-config.yaml, README.md,
+                            makefile, pyproject.toml, requirements-
+                            dev.in, requirements-dev.txt,
+                            requirements.in, requirements.txt.
       -o  [ ...], --overwrite  [ ...]
-                            Overwrite existing config files. Allowed values are the same as the
-                            values accepted by the '-f/--file' flag.
+                            Overwrite existing config files. Allowed
+                            values are the same as the values
+                            accepted by the '-f/--file' flag.
       -a  [ ...], --append  [ ...]
-                            Append to existing config files. Allowed values are the same as the
-                            values accepted by the '-f/--file' flag.
+                            Append to existing config files. Allowed
+                            values are the same as the values
+                            accepted by the '-f/--file' flag.
       -s  [ ...], --show  [ ...]
-                            Display the config file contents. Allowed values are the same as
-                            the values accepted by the '-f/--file' flag.
+                            Display the config file contents.
+                            Allowed values are the same as the
+                            values accepted by the '-f/--file' flag.
       -v, --version         Display the version number.
-
     ```
 
 * Display a list of config files that are going to be created:
@@ -101,12 +113,14 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
+            Rubric - Isomorphic Project Initializer for Python ⚙️
 
     Config files that are about to be generated:
 
+    => .editorconfig
     => .flake8
     => .gitignore
+    => .pre-commit-config.yaml
     => README.md
     => makefile
     => pyproject.toml
@@ -114,6 +128,7 @@ The files will contain minimal but sensible default configurations for the respe
     => requirements-dev.txt
     => requirements.in
     => requirements.txt
+
     ```
 
 * Take a peek into the content of any config file(s):
@@ -124,7 +139,7 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-            Rubric - Isomorphic Dependency & Config Management for Python ⚙️
+            Rubric - Isomorphic Project Initializer for Python ⚙️
 
 
     ================================= .flake8 =================================
@@ -155,11 +170,24 @@ The files will contain minimal but sensible default configurations for the respe
 
     =========================== requirements-dev.in ===========================
 
+    # For linting.
     black
-    isort
     flake8
+    isort
     mypy
+    pre-commit
+
+    # For dep management.
     pip-tools
+
+    # For testing.
+    pytest
+    pytest-asyncio
+
+    # For building & uploading to PyPI.
+    twine
+    build
+
     ```
 
 
