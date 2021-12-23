@@ -33,15 +33,17 @@ Following is a list of config files that Rubric is going to add to your target d
 
 ```
 root
-├── .flake8                # Config file for .flake8
-├── .gitignore             # Python specific .gitignore file
-├── makefile               # Makefile containing the commands to lint your code
-├── pyproject.toml         # Toml file to with the configs for mypy, black & isort
-├── README.md              # A readme boilerplate
-├── requirements-dev.in    # File to specify the top level dev requirements
-├── requirements-dev.txt   # File to specify the dev requirements
-├── requirements.in        # File to specify the top level app requirements
-└── requirements.txt       # File to specify the pinned app requirements
+├── .editorconfig           # Config file for Editorconfig
+├── .flake8                 # Config file for .flake8
+├── .gitignore              # Python specific .gitignore file
+├── .pre-commit-config.yaml # Config to manage pre-commit hooks.
+├── makefile                # Makefile containing the commands to lint your code
+├── pyproject.toml          # Toml file to with the configs for mypy, black & isort
+├── README.md               # A readme boilerplate
+├── requirements-dev.in     # File to specify the top level dev requirements
+├── requirements-dev.txt    # File to specify the dev requirements
+├── requirements.in         # File to specify the top level app requirements
+└── requirements.txt        # File to specify the pinned app requirements
 ```
 
 The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
@@ -69,41 +71,41 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-            Rubric - Isomorphic Project Initializer for Python ⚙️
+          Rubric - Isomorphic Project Initializer for Python ⚙️
 
     usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]]
                   [-s  [...]] [-v]
                   [run]
 
     positional arguments:
-      run                   Run rubric & initialize the project
-                            scaffold.
+      run                   Run rubric & initialize the project scaffold.
 
     optional arguments:
       -h, --help            Show this help message and exit.
-      -l, --list            List the config files that are about to
-                            be generated.
+      -l, --list            List the config files that are about to be
+                            generated.
       -d , --dirname        Target directory name.
       -f  [ ...], --filename  [ ...]
-                            Target file names. Allowed values are:
-                            all, .editorconfig, .flake8, .gitignore,
-                            .pre-commit-config.yaml, README.md,
-                            makefile, pyproject.toml, requirements-
-                            dev.in, requirements-dev.txt,
-                            requirements.in, requirements.txt.
+                            Target file names. Allowed values are: all,
+                            .editorconfig, .flake8, .gitignore, .pre-
+                            commit-config.yaml, README.md, makefile,
+                            pyproject.toml, requirements-dev.in,
+                            requirements-dev.txt, requirements.in,
+                            requirements.txt.
       -o  [ ...], --overwrite  [ ...]
                             Overwrite existing config files. Allowed
-                            values are the same as the values
-                            accepted by the '-f/--file' flag.
+                            values are the same as the values accepted by
+                            the '-f/--file' flag.
       -a  [ ...], --append  [ ...]
                             Append to existing config files. Allowed
-                            values are the same as the values
-                            accepted by the '-f/--file' flag.
+                            values are the same as the values accepted by
+                            the '-f/--file' flag.
       -s  [ ...], --show  [ ...]
-                            Display the config file contents.
-                            Allowed values are the same as the
-                            values accepted by the '-f/--file' flag.
+                            Display the config file contents. Allowed
+                            values are the same as the values accepted by
+                            the '-f/--file' flag.
       -v, --version         Display the version number.
+
     ```
 
 * Display a list of config files that are going to be created:
