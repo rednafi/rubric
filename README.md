@@ -2,7 +2,7 @@
 <div align="center">
 
 <h1>Rubric</h1>
-<strong>>> <i>Isomorphic Project Initialization for Python</i> <<</strong>
+<strong>>> <i>Linter Config Initialization for Python</i> <<</strong>
 
 &nbsp;
 
