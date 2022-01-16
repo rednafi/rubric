@@ -12,7 +12,7 @@ def test_filegallery():
         ".gitignore",
         ".pre-commit-config.yaml",
         "README.md",
-        "makefile",
+        "Makefile",
         "pyproject.toml",
         "requirements-dev.in",
         "requirements-dev.txt",
@@ -24,7 +24,6 @@ def test_filegallery():
     assert target_filenames == current_filenames
 
 
-@pytest.mark.asyncio
 async def test_copy_over(tmp_path):
     print(type(tmp_path))
     d = tmp_path / "dest"
@@ -45,7 +44,6 @@ async def test_copy_over(tmp_path):
         await rubric.copy_over("pypro.toml", dst_dirname=str(d))
 
 
-@pytest.mark.asyncio
 async def test_copy_over_overwrite(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
@@ -63,7 +61,6 @@ async def test_copy_over_overwrite(tmp_path):
     assert "tool.black" in p.read_text()
 
 
-@pytest.mark.asyncio
 async def test_copy_over_append(tmp_path):
     d = tmp_path / "dest"
     d.mkdir()
@@ -81,7 +78,6 @@ async def test_copy_over_append(tmp_path):
     assert "tool.black" in p.read_text()
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "overwrite, append",
     [(False, False), (True, False), (False, True), (True, True)],
@@ -106,7 +102,6 @@ async def test_orcherstrator(tmp_path, overwrite, append):
     assert "pip-tools" in r.read_text()
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(True, False)])
 async def test_orcherstrator_overwrite(
     tmp_path,
@@ -145,7 +140,6 @@ async def test_orcherstrator_overwrite(
     assert "Lorem ipsum!" not in r.read_text()
 
 
-@pytest.mark.asyncio
 @pytest.mark.parametrize("overwrite, append", [(False, True)])
 async def test_orcherstrator_append(tmp_path, overwrite, append):
     d = tmp_path / "dest"
@@ -179,7 +173,6 @@ async def test_orcherstrator_append(tmp_path, overwrite, append):
     assert "Lorem ipsum!" in r.read_text()
 
 
-@pytest.mark.asyncio
 async def test_display(capsys):
 
     for filename in ("pyproject.toml", "README.md", "requirements-dev.in"):
