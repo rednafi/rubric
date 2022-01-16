@@ -197,7 +197,7 @@ def test_cli_entrypoint(tmp_path, capsys):
     capture = capsys.readouterr()
     out = capture.out
 
-    assert r"Isomorphic" in out
+    assert r">> Linter Config Initializer for Python <<" in out
     assert r"creating" or "exists" in out
 
     with pytest.raises(SystemExit):
