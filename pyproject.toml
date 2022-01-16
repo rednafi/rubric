@@ -24,3 +24,8 @@ disallow_incomplete_defs = true
 [[tool.mypy.overrides]]
 module = "tests.*"
 ignore_errors = true
+
+
+# pyproject.toml
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

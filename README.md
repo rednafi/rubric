@@ -2,7 +2,7 @@
 <div align="center">
 
 <h1>Rubric</h1>
-<strong>>> <i>Isomorphic Project Initialization for Python</i> <<</strong>
+<strong>>> <i>Linter Config Initializer for Python</i> <<</strong>
 
 &nbsp;
 
@@ -13,12 +13,7 @@
 
 ## Preface
 
-Rubric aims to lower the activation energy required to start a new Python project. Starting a new Python project usually entails—creating a new repo, cloning that to your local machine, creating and activating a virtual environment, manage the dependencies, adding linter configuration, and so on. Doing this over and over again in many different ways that are common in the Python ecosystem can be cumbersome. This also implies, each of your projects will look slightly different in terms of what tools they're using to manage the dependencies and how they're configured.
-
-Also, if you're maintaining multiple repositories where they don't share a common structure on how they manage dependencies, configuration, linting, etc; it can go out of hand pretty quickly. Apart from helping you initialize new projects, Rubric can also help you make your existing Python projects conform to a single setup system.
-
-It doesn't enforce any source code structure. Rather it just assumes that—you'd want to use the following tools to lint and manage your code—and adds a bunch of sensible configuration files to your project's root folder:
-
+Rubric initializes the configuration files of a few Python linters and formatters. Also, it adds a README.md boilerplace and a simple Makefile with the commands to apply the tools. This helps you maintain an isomorphic workflow across multiple projects. It assumes that, in all of your Python projects, you'll use—
 
 * [Black](https://github.com/psf/black) as the primary code formatter.
 * [EditorConfig](https://editorconfig.org/) to enforce consistent coding styles for multiple developers.
@@ -37,7 +32,7 @@ root
 ├── .flake8                 # Config file for .flake8
 ├── .gitignore              # Python specific .gitignore file
 ├── .pre-commit-config.yaml # Config to manage pre-commit hooks.
-├── makefile                # Makefile containing the commands to lint your code
+├── Makefile                # Makefile containing the commands to lint your code
 ├── pyproject.toml          # Toml file to with the configs for mypy, black & isort
 ├── README.md               # A readme boilerplate
 ├── requirements-dev.in     # File to specify the top level dev requirements
@@ -71,39 +66,40 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-              Rubric - Isomorphic Project Initializer for Python ⚙️
+            >> Linter Config Initializer for Python <<
 
     usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]]
                   [-s  [...]] [-v]
                   [run]
 
     positional arguments:
-      run                   Run rubric & initialize the project scaffold.
+      run                   Run rubric & initialize the project
+                            scaffold.
 
     optional arguments:
       -h, --help            Show this help message and exit.
-      -l, --list            List the config files that are about to be
-                            generated.
+      -l, --list            List the config files that are about to
+                            be generated.
       -d , --dirname        Target directory name.
       -f  [ ...], --filename  [ ...]
-                            Target file names. Allowed values are: all,
-                            .editorconfig, .flake8, .gitignore, .pre-
-                            commit-config.yaml, README.md, makefile,
-                            pyproject.toml, requirements-dev.in,
-                            requirements-dev.txt, requirements.in,
-                            requirements.txt.
+                            Target file names. Allowed values are:
+                            all, .editorconfig, .flake8, .gitignore,
+                            .pre-commit-config.yaml, README.md,
+                            Makefile, pyproject.toml, requirements-
+                            dev.in, requirements-dev.txt,
+                            requirements.in, requirements.txt.
       -o  [ ...], --overwrite  [ ...]
                             Overwrite existing config files. Allowed
-                            values are the same as the values accepted by
-                            the '-f/--file' flag.
+                            values are the same as the values
+                            accepted by the '-f/--file' flag.
       -a  [ ...], --append  [ ...]
                             Append to existing config files. Allowed
-                            values are the same as the values accepted by
-                            the '-f/--file' flag.
+                            values are the same as the values
+                            accepted by the '-f/--file' flag.
       -s  [ ...], --show  [ ...]
                             Display the config file contents. Allowed
-                            values are the same as the values accepted by
-                            the '-f/--file' flag.
+                            values are the same as the values
+                            accepted by the '-f/--file' flag.
       -v, --version         Display the version number.
 
     ```
@@ -115,7 +111,9 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-                Rubric - Isomorphic Project Initializer for Python ⚙️
+    $ rubric --list
+
+                        >> Linter Config Initializer for Python <<
 
     Config files that are about to be generated:
 
@@ -124,14 +122,12 @@ The files will contain minimal but sensible default configurations for the respe
     => .gitignore
     => .pre-commit-config.yaml
     => README.md
-    => makefile
+    => Makefile
     => pyproject.toml
     => requirements-dev.in
     => requirements-dev.txt
     => requirements.in
-    => requirements.txt
-
-    ```
+    => requirements.txt    ```
 
 * Take a peek into the content of any config file(s):
     ```
@@ -141,8 +137,7 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-                Rubric - Isomorphic Project Initializer for Python ⚙️
-
+                >> Linter Config Initializer for Python <<
 
     ================================= .flake8 =================================
 

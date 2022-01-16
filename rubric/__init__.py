@@ -17,7 +17,7 @@ FILE_GALLERY = [
     ".gitignore",
     ".pre-commit-config.yaml",
     "README.md",
-    "makefile",
+    "Makefile",
     "pyproject.toml",
     "requirements-dev.in",
     "requirements-dev.txt",
@@ -153,7 +153,7 @@ class CLI:
     @property
     def header(self) -> None:
         """CLI header class."""
-        ethos = "Rubric - Isomorphic Project Initializer for Python ⚙️"
+        ethos = ">> Linter Config Initializer for Python <<"
 
         print(
             "\n",
