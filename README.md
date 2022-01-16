@@ -66,7 +66,7 @@ The files will contain minimal but sensible default configurations for the respe
     You should see the following output:
 
     ```
-                >> Linter Config Initializer for Python <<
+                        >> Linter Config Initializer for Python <<
 
     usage: rubric [-h] [-l] [-d] [-f  [...]] [-o  [...]] [-a  [...]] [-s  [...]]
                 [-v]
@@ -108,8 +108,6 @@ The files will contain minimal but sensible default configurations for the respe
     ```
 
     ```
-    $ rubric --list
-
                         >> Linter Config Initializer for Python <<
 
     Config files that are about to be generated:
@@ -134,7 +132,7 @@ The files will contain minimal but sensible default configurations for the respe
     This will print:
 
     ```
-                >> Linter Config Initializer for Python <<
+                    >> Linter Config Initializer for Python <<
 
     ================================= .flake8 =================================
 
