@@ -10,7 +10,7 @@ insert_final_newline = true
 charset = utf-8
 end_of_line = lf
 
-[*.{py, md}]
+[*.{py,md}]
 indent_size = 4
 
 [Makefile]
