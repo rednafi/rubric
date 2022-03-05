@@ -1,45 +1,65 @@
-name: Rubric Test
+
+name: Run Tests
 
 on:
+  release:
+    types: [published]
+    branches:
+      - main
+    tags:
+      - "v*"
+
   push:
     branches:
       - main
-      - dev
+    tags:
+      - "v*"
 
   pull_request:
     branches:
-      - main
+      - master
 
   schedule:
-    # Run cron at the end of every day.
-    - cron: "0 0 * * *"
+    # Every day at 1.00 UTC.
+    - cron: "0 1 * * *"
+
+# If you trigger a new workflow while the previous one is running,
+# this will cancel the previous one.
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
-  ci:
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-        os: [ubuntu-latest, macos-latest]
-
+  run-tests:
     runs-on: ${{ matrix.os }}
+    strategy:
+      # Use matrix strategy to run the tests on multiple Py versions on multiple OSs.
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.8", "3.9", "3.10"]
+        include:
+        - os: ubuntu-latest
+          path: ~/.cache/pip
+        - os: macos-latest
+          path: ~/Library/Caches/pip
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-          # NOTE: Cache server bug
-          # https://github.com/actions/setup-node/issues/379
 
-          # cache: "pip"
-          # cache-dependency-path: |
-          #   ./requirements.txt
-          #   ./requirements-dev.txt
+      - uses: actions/cache@v2
+        with:
+          path: ${{ matrix.path }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.cfg') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install the Dependencies
         run: |
           echo "Installing the dependencies..."
-          python -m pip install -r requirements-dev.txt
+          python -m pip install -e .[dev_deps]
 
       - name: Check Linter
         run: |
@@ -49,4 +69,4 @@ jobs:
       - name: Run Tests
         run: |
           echo "Running the tests..."
-          python -m pytest
+          python -m pytest -v -s

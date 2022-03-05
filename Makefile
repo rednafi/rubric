@@ -62,17 +62,6 @@ test: ## Run the tests against the current version of Python.
 	pytest
 
 
-.PHONY: dep-lock
-dep-lock: ## Freeze deps in 'requirements.txt' file.
-	@pip-compile --no-emit-options requirements.in -o requirements.txt
-	@pip-compile --no-emit-options requirements-dev.in -o requirements-dev.txt
-
-
-.PHONY: dep-sync
-dep-sync: ## Sync venv installation with 'requirements.txt' file.
-	@pip-sync
-
-
 .PHONY: build
 build: ## Build the CLI.
 	@rm -rf build/ dist/
