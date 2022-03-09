@@ -5,7 +5,7 @@ import rubric
 
 @pytest.fixture
 def create_file(tmp_path, filename):
-    """Fixture to create a file to the tmp_path/tmp directory."""
+    """Fixture to create a file in the tmp_path/tmp directory."""
 
     directory = tmp_path / "tmp"
     directory.mkdir()
