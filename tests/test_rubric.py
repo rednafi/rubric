@@ -19,7 +19,7 @@ def test_filegallery():
         "requirements.in",
         "requirements.txt",
     ]
-    current_filenames = rubric.FILE_GALLERY
+    current_filenames = rubric.FILENAMES
 
     assert target_filenames == current_filenames
 
@@ -94,7 +94,7 @@ async def test_orcherstrator(tmp_path, overwrite, append):
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -128,7 +128,7 @@ async def test_orcherstrator_overwrite(
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -161,7 +161,7 @@ async def test_orcherstrator_append(tmp_path, overwrite, append):
     await rubric.orchestrator(dst_dirname=str(d), overwrite=overwrite, append=append)
 
     # Check whether there are all the files in the directory.
-    assert len(list(d.iterdir())) == len(rubric.FILE_GALLERY)
+    assert len(list(d.iterdir())) == len(rubric.FILENAMES)
 
     # Assert file contents.
     assert "tool.isort" in p.read_text()
@@ -176,7 +176,7 @@ async def test_orcherstrator_append(tmp_path, overwrite, append):
 async def test_display(capsys):
 
     for filename in ("pyproject.toml", "README.md", "requirements-dev.in"):
-        await rubric.display(filename)
+        await rubric.display_content(filename)
 
     capture = capsys.readouterr()
     out = capture.out

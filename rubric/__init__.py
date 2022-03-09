@@ -1,17 +1,20 @@
 from __future__ import annotations
 
-import argparse
-import asyncio
 import importlib.resources
 import shutil
 import sys
-from collections.abc import Awaitable, Callable
-from pathlib import Path
-from typing import Any
 
+if sys.version_info >= (3, 9):
+    from collections.abc import Iterable
+else:
+    from typing import Iterable
+
+from pathlib import Path
+
+import click
 import pkg_resources
 
-FILE_GALLERY = [
+FILENAMES = (
     ".editorconfig",
     ".flake8",
     ".gitignore",
@@ -23,12 +26,12 @@ FILE_GALLERY = [
     "requirements-dev.txt",
     "requirements.in",
     "requirements.txt",
-]
+)
 
 TERMINAL_COLUMN_SIZE: int = shutil.get_terminal_size().columns
 
 
-def _copy_over(
+def copy_over(
     src_filename: str,
     dst_dirname: str = ".",
     overwrite: bool = False,
@@ -78,26 +81,18 @@ def _copy_over(
             dst_file.write(src_file.read())
 
 
-async def copy_over(
-    src_filename: str,
-    dst_dirname: str = ".",
-    overwrite: bool = False,
-    append: bool = False,
-) -> None:
-    """
-    Creates a file named 'src_file' in the 'dst_dirname' directory and
-    looks into the 'rubric' directory to see if there is a file with the same
-    name as 'src_file' exists. If the file exists then it copies the contents
-    of the file over to 'dst_dirname/src_filename'.
-    """
-
-    loop = asyncio.get_running_loop()
-    await loop.run_in_executor(
-        None, _copy_over, src_filename, dst_dirname, overwrite, append
-    )
+def list_filenames(filenames: Iterable[str] = FILENAMES) -> None:
+    print("Config files that are about to be generated:\n")
+    for filename in filenames:
+        print(f"=> {filename}")
 
 
-def _display(filename: str) -> None:
+def display_version() -> None:
+    __version__ = pkg_resources.get_distribution("rubric").version
+    print(f"version: {__version__}")
+
+
+def display_content(filename: str) -> None:
     """Prints the contents of the config files."""
 
     with importlib.resources.open_text("rubric.files", filename) as file:
@@ -112,14 +107,9 @@ def _display(filename: str) -> None:
         )
 
 
-async def display(filename: str) -> None:
-    loop = asyncio.get_running_loop()
-    await loop.run_in_executor(None, _display, filename)
-
-
-async def orchestrator(
+def orchestrator(
     dst_dirname: str,
-    filenames: list = FILE_GALLERY,  # Infra filenames.
+    filenames: Iterable[str] = FILENAMES,  # Infra filenames.
     overwrite: bool = False,
     append: bool = False,
     show: bool = False,
@@ -127,264 +117,135 @@ async def orchestrator(
 
     """
     Diplays / Creates / Overwrites / Appends to the files listed
-    in the 'FileGallery' asynchronously.
+    in the 'FileGallery'.
     """
 
     if show:
-        tasks = [display(filename) for filename in filenames]
+        for filename in filenames:
+            display_content(filename)
     else:
-        tasks = [
+        for src_filename in filenames:
             copy_over(src_filename, dst_dirname, overwrite, append)
-            for src_filename in filenames
-        ]
-
-    await asyncio.gather(*tasks)
 
 
-class CLI:
-    def __init__(
-        self,
-        func: Callable[..., Awaitable[None]] = orchestrator,
-        filenames: list = FILE_GALLERY,
-    ) -> None:
-        self.func = func
-        self.filenames = filenames
+@click.command()
+@click.option(
+    "--version",
+    "-v",
+    is_flag=True,
+    default=False,
+    help="Display the version number.",
+)
+@click.option(
+    "--show",
+    "-s",
+    is_flag=True,
+    default=False,
+    help="Show the contents of the config files.",
+)
+@click.option(
+    "--append",
+    "-a",
+    is_flag=True,
+    default=False,
+    help=(
+        "Append to existing config files. Allowed values are the "
+        "same as the values accepted by the '-f/--file' flag."
+    ),
+)
+@click.option(
+    "--overwrite",
+    "-o",
+    is_flag=True,
+    default=False,
+    help="Overwrite existing config files.",
+)
+@click.option(
+    "--filename",
+    "-f",
+    multiple=True,
+    type=click.Choice(FILENAMES),
+    help="Target file names.",
+)
+@click.option(
+    "--dirname",
+    "-d",
+    type=click.Path(exists=True),
+    default=".",
+    help="Target directory name.",
+)
+@click.option(
+    "--list",
+    "-l",
+    default=False,
+    is_flag=True,
+    help="List the config files that are about to be generated.",
+)
+@click.option(
+    "--no-dry/--dry",
+    default=False,
+    is_flag=True,
+    help="DRY run.",
+)
+def cli(
+    list: bool,
+    dirname: str,
+    filename: str,
+    overwrite: bool,
+    append: bool,
+    show: bool,
+    version: bool,
+    no_dry: bool,
+) -> None:
 
-    @property
-    def header(self) -> None:
-        """CLI header class."""
-        ethos = ">> Linter Config Initializer for Python <<"
-
-        print(
-            "\n",
-            "\033[1m",
-            ethos.center(TERMINAL_COLUMN_SIZE - 11),
-            "\033[0m",
-            end="\n\n",
+    if list and show:
+        raise click.UsageError(
+            "Cannot use '--list' / '-l' and '--show' / '-s' together."
         )
 
-    def build_parser(self) -> argparse.ArgumentParser:
-        parser = argparse.ArgumentParser(
-            add_help=False,
+    if overwrite and show:
+        raise click.UsageError(
+            "Cannot use '--overwrite' / '-o'  and '--show' / '-s' together."
         )
 
-        # Add arguments.
-        parser.add_argument(
-            "-h",
-            "--help",
-            action="help",
-            default=argparse.SUPPRESS,
-            help="Show this help message and exit.",
+    if append and overwrite:
+        raise click.UsageError(
+            "Cannot use '--append' / '-a' and '--overrite' / '-o' together."
         )
 
-        # Add arguments.
-        parser.add_argument(
-            "run",
-            help="Run rubric & initialize the project scaffold.",
-            nargs="?",
+    if append and show:
+        raise click.UsageError(
+            "Cannot use '--append' / '-a' and '--show' / '-s' together."
         )
 
-        parser.add_argument(
-            "-l",
-            "--list",
-            help="List the config files that are about to be generated.",
-            action="store_true",
-        )
-        parser.add_argument(
-            "-d",
-            "--dirname",
-            help="Target directory name.",
-            metavar="",
-        )
+    # Call handlers.
+    files = filename if filename else FILENAMES
 
-        parser.add_argument(
-            "-f",
-            "--filename",
-            help=(
-                "Target file names. Allowed values are: "
-                f"all, {', '.join(x for x in self.filenames)}."
-            ),
-            nargs="+",
-            default=["all"],
-            metavar="",
-        )
+    if list:
+        return list_filenames(files)
 
-        parser.add_argument(
-            "-o",
-            "--overwrite",
-            help=(
-                "Overwrite existing config files. Allowed values are the "
-                "same as the values accepted by the '-f/--file' flag."
-            ),
-            nargs="+",
-            metavar="",
-        )
+    if overwrite:
+        return orchestrator(dst_dirname=dirname, filenames=files, overwrite=overwrite)
 
-        parser.add_argument(
-            "-a",
-            "--append",
-            help=(
-                "Append to existing config files. Allowed values are the "
-                "same as the values accepted by the '-f/--file' flag."
-            ),
-            nargs="+",
-            metavar="",
-        )
+    if append:
+        return orchestrator(dst_dirname=dirname, filenames=files, append=append)
 
-        parser.add_argument(
-            "-s",
-            "--show",
-            help=(
-                "Display the config file contents. Allowed values are the "
-                "same as the values accepted by the '-f/--file' flag."
-            ),
-            nargs="+",
-            metavar="",
-        )
+    if show:
+        return orchestrator(dst_dirname=dirname, filenames=files, show=show)
 
-        parser.add_argument(
-            "-v",
-            "--version",
-            help="Display the version number.",
-            action="store_true",
-        )
+    if version:
+        return display_version()
 
-        return parser
-
-    def handle_argerr(
-        self,
-        parser: argparse.ArgumentParser,
-        args: argparse.Namespace,
-    ) -> None:
-
-        default = ["all"]
-        if args.filename != default and not args.run:
-            parser.error("'-f/--filename' cannot be used without 'run'")
-
-        if args.dirname and not args.run:
-            parser.error("'-d/--dirname' cannot be used without 'run'")
-
-        if args.overwrite and not args.run:
-            parser.error("'-o/--overwrite' cannot be used without 'run'")
-
-        if args.append and not args.run:
-            parser.error("'-a/--append' cannot be used without 'run'")
-
-        if args.filename != default and args.overwrite:
-            parser.error("'-f/--filename' and '-o/overwrite' cannot be used together")
-
-        if args.filename != default and args.append:
-            parser.error("'-f/--filename' and '-a/append' cannot be used together")
-
-        if args.list and args.run:
-            parser.error("'-l/--list' and 'run' cannot be used together")
-
-        if args.show and args.run:
-            parser.error("'-s/--show' and 'run' cannot be used together")
-
-        if args.version and args.run:
-            parser.error("'-v/--version' and 'run' cannot be used together")
-
-        if args.list and args.version:
-            parser.error("'-l/--list' and '-v/--version' cannot be used together")
-
-        if args.list and args.show:
-            parser.error("'-l/--list' and '-s/--show' cannot be used together")
-
-        if args.version and args.show:
-            parser.error("'-v/--version' and '-s/--show' cannot be used together")
-
-        if args.version:
-            __version__ = pkg_resources.get_distribution("rubric").version
-            print(f"version: {__version__}")
-
-    def run_target(
-        self,
-        parser: argparse.ArgumentParser,
-        *args: Any,
-        **kwargs: Any,
-    ) -> None:
-        """Run the `consumer` function."""
-
-        try:
-            asyncio.run(self.func(*args, **kwargs))
-        except FileNotFoundError:
-            parser.error("invalid file/directory name")
-
-    def entrypoint(self, argv: list[str] | None = None) -> None:
-        # Print the nice rubric header.
-        self.header
-        parser = self.build_parser()
-
-        # Run help when the entrypoint command is called w/o any argument.
-        if not argv:
-            parser.parse_args(args=None if sys.argv[1:] else ["--help"])
-            args = parser.parse_args()
-        else:
-            args = parser.parse_args(argv)
-
-        # Handling pesky argument inconsistency errors.
-        self.handle_argerr(parser, args)
-
-        # Parsing the arguments.
-        filtered_filenames = self.filenames
-
-        show = args.show
-        if show and show != ["all"]:
-            filtered_filenames = show
-
-        filename = args.filename
-        if filename != ["all"]:
-            filtered_filenames = filename
-
-        overwrite = args.overwrite
-        if overwrite and overwrite != ["all"]:
-            filtered_filenames = overwrite
-
-        append = args.append
-        if append and append != ["all"]:
-            filtered_filenames = append
-
-        dst_dirname = "."
-        if args.dirname:
-            dst_dirname = args.dirname
-
-        # Actions based on the CLI arguments.
-        if args.list:
-            print("Config files that are about to be generated:\n")
-            for filename in filtered_filenames:
-                print(f"=> {filename}")
-
-        if args.show:
-            self.run_target(parser, dst_dirname, filtered_filenames, show=True)
-
-        if args.run == "run":
-            if args.overwrite:
-                self.run_target(
-                    parser,
-                    dst_dirname,
-                    filtered_filenames,
-                    overwrite=True,
-                )
-            elif args.append:
-                self.run_target(
-                    parser,
-                    dst_dirname,
-                    filtered_filenames,
-                    append=True,
-                )
-            else:
-                self.run_target(
-                    parser,
-                    dst_dirname,
-                    filtered_filenames,
-                )
+    if not any((overwrite, append, show, version)):
+        if no_dry:
+            return orchestrator(dst_dirname=dirname, filenames=files)
 
 
 def cli_entrypoint(argv: list[str] | None = None) -> None:
     """CLI entrypoint callable."""
-    cli = CLI()
-    cli.entrypoint(argv)
+    # cli = CLI()
+    # cli.entrypoint(argv)
+    cli(argv)
 
 
 if __name__ == "__main__":
