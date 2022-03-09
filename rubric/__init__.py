@@ -72,7 +72,6 @@ def copy_over(
             if open_mode == "w+":
                 if overwrite:
                     print(f"Overwriting {src_filename}...")
-
                 else:
                     print(f"Creating {src_filename}...")
             else:
@@ -81,15 +80,36 @@ def copy_over(
             dst_file.write(src_file.read())
 
 
-def list_filenames(filenames: Iterable[str] = FILENAMES) -> None:
-    print("Config files that are about to be generated:\n")
+def list_filenames(
+    ctx: click.Context,
+    param: click.Parameter,
+    value: bool,
+    filenames: Iterable[str] = FILENAMES,
+) -> None:
+    """Callback to list the names of the config files."""
+
+    if not value or ctx.resilient_parsing:
+        return
+
+    click.echo("Config files that are about to be generated:\n")
     for filename in filenames:
         print(f"=> {filename}")
+    ctx.exit()
 
 
-def display_version() -> None:
+def display_version(
+    ctx: click.Context,
+    param: click.Parameter,
+    value: bool,
+) -> None:
+    """Callback to display the version number of the CLI."""
+
+    if not value or ctx.resilient_parsing:
+        return
+
     __version__ = pkg_resources.get_distribution("rubric").version
     print(f"version: {__version__}")
+    ctx.exit()
 
 
 def display_content(filename: str) -> None:
@@ -116,8 +136,8 @@ def orchestrator(
 ) -> None:
 
     """
-    Diplays / Creates / Overwrites / Appends to the files listed
-    in the 'FileGallery'.
+    Display / Create / Overwrite / Append to the files listed
+    in the 'FILENAMES' iterable.
     """
 
     if show:
@@ -134,6 +154,7 @@ def orchestrator(
     "-v",
     is_flag=True,
     default=False,
+    callback=display_version,
     help="Display the version number.",
 )
 @click.option(
@@ -148,10 +169,7 @@ def orchestrator(
     "-a",
     is_flag=True,
     default=False,
-    help=(
-        "Append to existing config files. Allowed values are the "
-        "same as the values accepted by the '-f/--file' flag."
-    ),
+    help="Append to existing config files.",
 )
 @click.option(
     "--overwrite",
@@ -159,6 +177,13 @@ def orchestrator(
     is_flag=True,
     default=False,
     help="Overwrite existing config files.",
+)
+@click.option(
+    "--create",
+    "-c",
+    default=False,
+    is_flag=True,
+    help="Create the config files in the current directory.",
 )
 @click.option(
     "--filename",
@@ -179,24 +204,34 @@ def orchestrator(
     "-l",
     default=False,
     is_flag=True,
+    callback=list_filenames,
     help="List the config files that are about to be generated.",
-)
-@click.option(
-    "--no-dry/--dry",
-    default=False,
-    is_flag=True,
-    help="DRY run.",
 )
 def cli(
     list: bool,
     dirname: str,
     filename: str,
+    create: bool,
     overwrite: bool,
     append: bool,
     show: bool,
     version: bool,
-    no_dry: bool,
 ) -> None:
+
+    if create and any((show, overwrite, append)):
+        if show:
+            raise click.UsageError(
+                "Cannot use '--create' / '-c' and '--show' / '-s' together."
+            )
+        if overwrite:
+            raise click.UsageError(
+                "Cannot use '--create' / '-c' and '--overwrite' / '-o' together."
+            )
+
+        if append:
+            raise click.UsageError(
+                "Cannot use '--create' / '-c' and '--append' / '-a' together."
+            )
 
     if list and show:
         raise click.UsageError(
@@ -221,9 +256,6 @@ def cli(
     # Call handlers.
     files = filename if filename else FILENAMES
 
-    if list:
-        return list_filenames(files)
-
     if overwrite:
         return orchestrator(dst_dirname=dirname, filenames=files, overwrite=overwrite)
 
@@ -233,20 +265,9 @@ def cli(
     if show:
         return orchestrator(dst_dirname=dirname, filenames=files, show=show)
 
-    if version:
-        return display_version()
-
-    if not any((overwrite, append, show, version)):
-        if no_dry:
-            return orchestrator(dst_dirname=dirname, filenames=files)
-
-
-def cli_entrypoint(argv: list[str] | None = None) -> None:
-    """CLI entrypoint callable."""
-    # cli = CLI()
-    # cli.entrypoint(argv)
-    cli(argv)
+    if create and not any((show, overwrite, append)):
+        return orchestrator(dst_dirname=dirname, filenames=files)
 
 
 if __name__ == "__main__":
-    cli_entrypoint()
+    cli()
