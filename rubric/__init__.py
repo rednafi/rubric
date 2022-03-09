@@ -82,7 +82,7 @@ def copy_over(
 
 def list_filenames(
     ctx: click.Context,
-    param: click.Parameter,
+    param: click.Parameter | None,
     value: bool,
     filenames: Iterable[str] = FILENAMES,
 ) -> None:
@@ -99,7 +99,7 @@ def list_filenames(
 
 def display_version(
     ctx: click.Context,
-    param: click.Parameter,
+    param: click.Parameter | None,
     value: bool,
 ) -> None:
     """Callback to display the version number of the CLI."""
@@ -109,6 +109,17 @@ def display_version(
 
     __version__ = pkg_resources.get_distribution("rubric").version
     print(f"version: {__version__}")
+    ctx.exit()
+
+
+def display_help(
+    ctx: click.Context,
+    param: click.Parameter | None,
+    value: bool,
+) -> None:
+    if value is False:
+        return
+    click.echo(ctx.get_help())
     ctx.exit()
 
 
@@ -150,10 +161,20 @@ def orchestrator(
 
 @click.command()
 @click.option(
+    "--help",
+    "-h",
+    is_flag=True,
+    expose_value=False,
+    is_eager=False,
+    callback=display_help,
+    help="Display help message.",
+)
+@click.option(
     "--version",
     "-v",
     is_flag=True,
     default=False,
+    expose_value=False,
     callback=display_version,
     help="Display the version number.",
 )
@@ -207,7 +228,9 @@ def orchestrator(
     callback=list_filenames,
     help="List the config files that are about to be generated.",
 )
+@click.pass_context
 def cli(
+    ctx: click.Context,
     list: bool,
     dirname: str,
     filename: str,
@@ -215,8 +238,11 @@ def cli(
     overwrite: bool,
     append: bool,
     show: bool,
-    version: bool,
 ) -> None:
+
+    # Display help text when there's no flag.
+    if not any((list, create, overwrite, append, show)):
+        display_help(ctx, None, True)
 
     if create and any((show, overwrite, append)):
         if show:
@@ -227,7 +253,6 @@ def cli(
             raise click.UsageError(
                 "Cannot use '--create' / '-c' and '--overwrite' / '-o' together."
             )
-
         if append:
             raise click.UsageError(
                 "Cannot use '--create' / '-c' and '--append' / '-a' together."
