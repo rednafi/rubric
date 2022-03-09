@@ -119,6 +119,11 @@ def display_help(
 ) -> None:
     if value is False:
         return
+
+    ethos = ">> Config Initializer for Python Projects <<"
+    decor = " "
+    pad = decor * ((TERMINAL_COLUMN_SIZE - len(ethos)) // 2 - 8)
+    click.echo(f"{pad}{ethos}{pad}\n", color=True)
     click.echo(ctx.get_help())
     ctx.exit()
 
@@ -129,9 +134,9 @@ def display_content(filename: str) -> None:
     with importlib.resources.open_text("rubric.files", filename) as file:
 
         decor = "="
-        prefix = decor * ((TERMINAL_COLUMN_SIZE - len(filename)) // 2 - 10)
+        pad = decor * ((TERMINAL_COLUMN_SIZE - len(filename)) // 2 - 10)
         print(
-            f"\n{prefix} {filename} {prefix}\n\n",
+            f"\n{pad} {filename} {pad}\n\n",
             file.read(),
             end="",
             sep="",
