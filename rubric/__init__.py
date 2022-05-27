@@ -2,12 +2,8 @@ from __future__ import annotations
 
 import importlib.resources
 import shutil
-import sys
 
-if sys.version_info >= (3, 9):
-    from collections.abc import Iterable
-else:
-    from typing import Iterable
+from typing import Iterable
 
 from pathlib import Path
 
