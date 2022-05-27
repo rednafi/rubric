@@ -2,10 +2,8 @@ from __future__ import annotations
 
 import importlib.resources
 import shutil
-
-from typing import Iterable
-
 from pathlib import Path
+from typing import Iterable
 
 import click
 import pkg_resources
