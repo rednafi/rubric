@@ -18,8 +18,5 @@ warn_unused_ignores = true
 allow_untyped_globals = true
 allow_redefinition = true
 pretty = true
+exclude = ["build", "tests"]
 
-
-[[tool.mypy.overrides]]
-module = "tests.*"
-ignore_errors = true
