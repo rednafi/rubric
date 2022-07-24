@@ -59,7 +59,7 @@ help: ## Show this help message.
 
 .PHONY: test
 test: ## Run the tests against the current version of Python.
-	pytest
+	pytest -v -s
 
 
 .PHONY: build
