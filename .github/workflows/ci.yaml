@@ -60,4 +60,4 @@ jobs:
       - name: Run Tests
         run: |
           echo "Running the tests..."
-          python -m pytest -v -s
+          make test
