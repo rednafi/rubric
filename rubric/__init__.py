@@ -76,7 +76,7 @@ def copy_over(
 
 def list_filenames(
     ctx: click.Context,
-    param: click.Parameter | None,
+    param: click.Parameter | None,  # noqa
     value: bool,
     filenames: Iterable[str] = FILENAMES,
 ) -> None:
@@ -93,7 +93,7 @@ def list_filenames(
 
 def display_version(
     ctx: click.Context,
-    param: click.Parameter | None,
+    param: click.Parameter | None,  # noqa
     value: bool,
 ) -> None:
     """Callback to display the version number of the CLI."""
@@ -108,7 +108,7 @@ def display_version(
 
 def display_help(
     ctx: click.Context,
-    param: click.Parameter | None,
+    param: click.Parameter | None,  # noqa
     value: bool,
 ) -> None:
     if value is False:
