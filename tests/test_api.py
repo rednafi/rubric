@@ -10,7 +10,7 @@ def create_file(tmp_path, filename):
     directory = tmp_path / "tmp"
     directory.mkdir()
     file = directory / filename  # request.param is the filename to be created
-    yield directory, file
+    yield file
 
 
 def test_filenames():
@@ -35,7 +35,8 @@ def test_filenames():
 
 @pytest.mark.parametrize("filename", ["pyproject.toml"])
 def test_copy_over(create_file):
-    directory, file = create_file
+    file = create_file
+    directory = file.parent
 
     # Creates a file in the temporary directory and copies the contents
     # of rubric/pyproject.toml file to it.
@@ -53,7 +54,8 @@ def test_copy_over(create_file):
 
 @pytest.mark.parametrize("filename", ["pyproject.toml"])
 def test_copy_over_overwrite(create_file):
-    directory, file = create_file
+    file = create_file
+    directory = file.parent
 
     file.write_text("Lorem ipsum!")
     assert "Lorem ipsum!" in file.read_text()
@@ -69,7 +71,9 @@ def test_copy_over_overwrite(create_file):
 
 @pytest.mark.parametrize("filename", ["pyproject.toml"])
 def test_copy_over_append(create_file):
-    directory, file = create_file
+    file = create_file
+    directory = file.parent
+
     file.write_text("Lorem ipsum!")
     assert "Lorem ipsum!" in file.read_text()
 
@@ -89,8 +93,9 @@ def test_copy_over_append(create_file):
     "overwrite, append",
     [(False, False), (True, False), (False, True), (True, True)],
 )
-async def test_orcherstrator(create_file, overwrite, append):
-    directory, file = create_file
+def test_orcherstrator(create_file, overwrite, append):
+    file = create_file
+    directory = file.parent
 
     # This should copy all the files from rubric/ to the temporary directory.
     rubric.orchestrator(dst_dirname=str(directory), overwrite=overwrite, append=append)
@@ -113,13 +118,14 @@ async def test_orcherstrator(create_file, overwrite, append):
     "filename", ["pyproject.toml", "README.md", "requirements-dev.in"]
 )
 @pytest.mark.parametrize("overwrite, append", [(True, False)])
-async def test_orcherstrator_overwrite(
+def test_orcherstrator_overwrite(
     create_file,
     overwrite,
     append,
 ):
 
-    directory, file = create_file
+    file = create_file
+    directory = file.parent
     file.write_text("Lorem ipsum!")
 
     assert "Lorem ipsum!" in file.read_text()
@@ -151,8 +157,9 @@ async def test_orcherstrator_overwrite(
     "filename", ["pyproject.toml", "README.md", "requirements-dev.in"]
 )
 @pytest.mark.parametrize("overwrite, append", [(False, True)])
-async def test_orcherstrator_append(create_file, overwrite, append):
-    directory, file = create_file
+def test_orcherstrator_append(create_file, overwrite, append):
+    file = create_file
+    directory = file.parent
 
     file.write_text("Lorem ipsum!")
 

@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rubric"
-version = "0.6.5"
+version = "0.6.6"
 authors = [
   { name="rednafi", email="redowan.nafi@gmail.com" },
 ]
@@ -43,8 +43,8 @@ dev = [
     "pre-commit",
     "pip-tools",
     "pytest",
-    "pytest-asyncio",
     "twine",
+    "hatch",
     "build",
     "types-setuptools",
     "types-pkg_resources",
@@ -56,6 +56,13 @@ dev = [
 
 [project.scripts]
 rubric = "rubric:cli"
+
+[tool.hatch.build]
+include = [
+  "rubric/*",
+  "/rubric/*/*",
+  "/tests/*",
+]
 
 ##########################################
 # Development configs
@@ -80,6 +87,3 @@ pretty = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 exclude = ["build", "tests"]
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
