@@ -1,14 +1,74 @@
-# Linter configuruation.
+##########################################
+# Build system configs
+##########################################
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rubric"
+version = "0.6.5"
+authors = [
+  { name="rednafi", email="redowan.nafi@gmail.com" },
+]
+description = ">> Linter Config Initialization for Python <<"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+dependencies = [
+    "click"
+]
+
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "mypy",
+    "pre-commit",
+    "pip-tools",
+    "pytest",
+    "pytest-asyncio",
+    "twine",
+    "build",
+    "types-setuptools",
+    "types-pkg_resources",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/rednafi/rubric"
+"Issue Tracker" = "https://github.com/pypa/rubric/issues"
+
+[project.scripts]
+rubric = "rubric:cli"
+
+##########################################
+# Development configs
+##########################################
+
 [tool.isort]
 profile = "black"
 atomic = true
-extend_skip_glob = "migrations,scripts"
+extend_skip_glob = "scripts"
 line_length = 88
 
-
 [tool.black]
-extend-exclude = "migrations,scripts"
-
+extend-exclude = "scripts"
 
 [tool.mypy]
 follow_imports = "skip"
@@ -21,7 +81,5 @@ disallow_untyped_defs = true
 disallow_incomplete_defs = true
 exclude = ["build", "tests"]
 
-
-# pyproject.toml
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
