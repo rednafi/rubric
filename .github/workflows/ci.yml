@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+  release:
+    types:
+      - published
+
   schedule:
     # At 00:00 on every Sunday.
     - cron: "0 0 * * 0"
@@ -21,7 +25,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-tests:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       # Use matrix strategy to run the tests on multiple Py versions on multiple OSs.
@@ -61,3 +65,13 @@ jobs:
         run: |
           echo "Running the tests..."
           make test
+
+  publish:
+    needs: ["test"]
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Publish a Python distribution to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
