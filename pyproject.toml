@@ -43,7 +43,6 @@ dev = [
     "pre-commit",
     "pip-tools",
     "pytest",
-    "build",
     "hatch",
     "types-setuptools",
     "types-pkg_resources",

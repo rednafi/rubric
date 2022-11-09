@@ -15,8 +15,8 @@ on:
       - published
 
   schedule:
-    # At 00:00 on every Sunday.
-    - cron: "0 0 * * 0"
+    # At 1:43 UTC on every Sunday.
+    - cron: "43 1 * * 0"
 
 # If you trigger a new workflow while the previous one is running,
 # this will cancel the previous one.
@@ -66,20 +66,20 @@ jobs:
           echo "Running the tests..."
           make test
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Upload pip cache
-          path: ~/.cache/pip # or path/to/artifact
-
   publish:
     needs: ["test"]
     if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
-          name: Download pip cache
-          path: ~/.cache/pip
+          python-version: "3.11"
+
+      - name: Install the Dependencies
+        run: |
+          echo "Installing the dependencies..."
+          python -m pip install -e .[dev]
 
       - name: Build the package
         run: |
