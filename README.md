@@ -8,23 +8,28 @@
 
 </div>
 
-![img](https://user-images.githubusercontent.com/30027932/122619075-6a87b700-d0b1-11eb-9d6b-355446910cc1.png)
+![logo]
 
 
 ## Preface
 
-Rubric initializes the configuration files of a few Python linters and formatters. Also, it adds a README.md boilerplace and a simple Makefile with the commands to apply the tools. This helps you maintain an isomorphic workflow across multiple projects. It assumes that, in all of your Python projects, you'll use—
+Rubric initializes the configuration files of a few Python linters and formatters. Also,
+it adds a README.md boilerplace and a simple Makefile with the commands to apply the
+tools. This helps you maintain an isomorphic workflow across multiple projects. It
+assumes that, in all of your Python projects, you'll use—
 
-* [Black](https://github.com/psf/black) as the primary code formatter.
-* [EditorConfig](https://editorconfig.org/) to enforce consistent coding styles for multiple developers.
-* [Isort](https://github.com/PyCQA/isort) to sort the imports.
-* [Flake8](https://github.com/PyCQA/flake8) to ensure style guide conformance.
-* [Mypy](https://github.com/python/mypy) to check the type hints.
-* [Pip-tools](https://github.com/jazzband/pip-tools) to manage the dependencies.
-* [Pre-commit](https://pre-commit.com/) for managing and maintaining the pre-commit hooks.
+* [Black][black] as the primary code formatter.
+* [EditorConfig][editor-config] to enforce consistent coding styles for multiple
+developers.
+* [Isort][isort] to sort the imports.
+* [Flake8][flake8] to ensure style guide conformance.
+* [Mypy][mypy] to check the type hints.
+* [Pip-tools][pip-tools] to manage the dependencies.
+* [Pre-commit][pre-commit] for managing and maintaining the pre-commit hooks.
 
 
-Following is a list of config files that Rubric is going to add to your target directory:
+Following is a list of config files that Rubric is going to add to your target
+directory:
 
 ```
 root
@@ -46,9 +51,7 @@ The files will contain minimal but sensible default configurations for the respe
 ## Installation
 
 * Rubric requires Python 3.8 and up.
-
 * Make a virtual environment in your project's root directory.
-
 * Activate the environment and run:
 
     ```
@@ -79,7 +82,9 @@ The files will contain minimal but sensible default configurations for the respe
     -o, --overwrite                 Overwrite existing config files.
     -c, --create                    Create the config files in the current
                                     directory.
-    -f, --filename [.editorconfig|.flake8|.gitignore|.pre-commit-config.yaml|README.md|Makefile|pyproject.toml|requirements-dev.in|requirements-dev.txt|requirements.in|requirements.txt]
+    -f, --filename [.editorconfig|.flake8|.gitignore|.pre-commit-config.yaml|README.md|
+    Makefile|pyproject.toml|requirements-dev.in|requirements-dev.txt|
+    requirements.in|requirements.txt]
                                     Target file names.
     -d, --dirname PATH              Target directory name.
     -l, --list                      List the config files that are about to be
@@ -108,7 +113,7 @@ The files will contain minimal but sensible default configurations for the respe
     => requirements.in
     => requirements.txt
     ```
-
+    
 * Take a peek into the content of any config file(s):
     ```
     rubric --show -f requirements.txt -f .flake8
@@ -154,14 +159,14 @@ The files will contain minimal but sensible default configurations for the respe
     jobs = 4
     ```
 
-
 * Initialize a project with the following command:
 
     ```
     rubric --create
     ```
 
-    This will run the tool in a non-destructive way—that means it won't overwrite any of the configuration files that you might have in the directory.
+    This will run the tool in a non-destructive way—that means it won't overwrite any of
+    the configuration files that you might have in the directory.
 
 * If you only want to create a selected list of config files, then run:
 
@@ -169,7 +174,8 @@ The files will contain minimal but sensible default configurations for the respe
     rubric --create -f requirements.txt -f requirements-dev.txt
     ```
 
-* If you want to overwrite any of the existing config files that you might have in the directory, then run:
+* If you want to overwrite any of the existing config files that you might have in the
+directory, then run:
 
     ```
     rubric --overwrite -f filename1 -f filename2
@@ -187,19 +193,30 @@ The files will contain minimal but sensible default configurations for the respe
     rubric --create --directory "some/custom/directory"
     ```
 
-* If you want to check and update the configs across multiple repositories in a single sweep, use the following command:
+* If you want to check and update the configs across multiple repositories in a single
+sweep, use the following command:
 
     ```
     s="dir1 dir2 dir3"; echo $s | xargs -n 1 -P $(echo $s | wc -w) rubric -c -d
     ```
 
-    This command will spawn 3 processes to create the config files in `dir1`, `dir2`, and `dir3` in parallel.
+    This command will spawn 3 processes to create the config files in `dir1`, `dir2`,
+    and `dir3` in parallel.
 
 * You can run the entire linter suite with this command:
 
     ```
     make lint
     ```
+
+[logo]: https://user-images.githubusercontent.com/30027932/122619075-6a87b700-d0b1-11eb-9d6b-355446910cc1.png
+[black]: https://github.com/psf/black
+[editor-config]: https://editorconfig.org/
+[isort]: https://github.com/PyCQA/isort
+[flake8]: https://github.com/PyCQA/flake8
+[mypy]: https://github.com/python/mypy
+[pip-tools]: https://github.com/jazzband/pip-tools
+[pre-commit]: https://pre-commit.com/
 
 <div align="center">
 <i> ✨ 🍰 ✨ </i>
