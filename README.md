@@ -46,7 +46,8 @@ root
 └── requirements.txt        # File to specify the pinned app requirements
 ```
 
-The files will contain minimal but sensible default configurations for the respective tools. You're free to change them as you like.
+The files will contain minimal but sensible default configurations for the respective
+tools. You're free to change them as you like.
 
 ## Installation
 
@@ -113,7 +114,7 @@ The files will contain minimal but sensible default configurations for the respe
     => requirements.in
     => requirements.txt
     ```
-    
+
 * Take a peek into the content of any config file(s):
     ```
     rubric --show -f requirements.txt -f .flake8
