@@ -7,7 +7,6 @@ from typing import Iterable
 
 import click
 import pkg_resources
-import sys
 
 FILENAMES = (
     ".editorconfig",
@@ -23,6 +22,7 @@ FILENAMES = (
 )
 
 TERMINAL_COLUMN_SIZE: int = shutil.get_terminal_size().columns
+
 
 def copy_over(
     src_filename: str,
