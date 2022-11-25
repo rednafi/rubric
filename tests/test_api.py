@@ -3,20 +3,19 @@ import pytest
 import rubric
 
 
-@pytest.fixture
+@pytest.fixture()
 def create_file(tmp_path, filename):
     """Fixture to create a file in the tmp_path/tmp directory."""
 
     directory = tmp_path / "tmp"
     directory.mkdir()
     file = directory / filename  # request.param is the filename to be created
-    yield file
+    return file
 
 
 def test_filenames():
     expected_filenames = (
         ".editorconfig",
-        ".flake8",
         ".gitignore",
         ".pre-commit-config.yaml",
         "README.md",
@@ -44,7 +43,8 @@ def test_copy_over(create_file):
     assert len(list(directory.iterdir())) == 1
 
     # Test the content of the pyproject.toml file.
-    assert "follow_imports" and "mypy" in file.read_text()
+    assert "follow_imports" in file.read_text()
+    assert "mypy" in file.read_text()
 
     # Raises filenotfound error when the target name of the file
     # doesn't exist in the rubric/ directory.
@@ -60,13 +60,13 @@ def test_copy_over_overwrite(create_file):
     file.write_text("Lorem ipsum!")
     assert "Lorem ipsum!" in file.read_text()
 
-    # Creates a file in the temporary directory and copies the contents
-    # of rubric/mypy.ini file to it
+    # Creates a file in the temporary directory and copies the contents of
+    # pyproject.toml file in it.
     rubric.copy_over("pyproject.toml", dst_dirname=str(directory), overwrite=True)
     assert len(list(directory.iterdir())) == 1
 
     assert "Lorem ipsum!" not in file.read_text()
-    assert "tool.black" in file.read_text()
+    assert "tool.ruff" in file.read_text()
 
 
 @pytest.mark.parametrize("filename", ["pyproject.toml"])
@@ -83,7 +83,7 @@ def test_copy_over_append(create_file):
     assert len(list(directory.iterdir())) == 1
 
     assert "Lorem ipsum!" in file.read_text()
-    assert "tool.black" in file.read_text()
+    assert "tool.ruff" in file.read_text()
 
 
 @pytest.mark.parametrize(
@@ -107,7 +107,7 @@ def test_orcherstrator(create_file, overwrite, append):
     assert (
         any(
             term
-            for term in ("tool.isort", "center", "pip-tools")
+            for term in ("tool.ruff", "center", "pip-tools")
             if term in file.read_text()
         )
         is True
@@ -144,7 +144,7 @@ def test_orcherstrator_overwrite(
     assert (
         any(
             term
-            for term in ("tool.isort", "center", "pip-tools")
+            for term in ("tool.ruff", "center", "pip-tools")
             if term in file.read_text()
         )
         is True
@@ -179,7 +179,7 @@ def test_orcherstrator_append(create_file, overwrite, append):
     assert (
         any(
             term
-            for term in ("tool.isort", "center", "pip-tools")
+            for term in ("tool.ruff", "center", "pip-tools")
             if term in file.read_text()
         )
         is True
@@ -195,7 +195,7 @@ def test_display(capsys):
     capture = capsys.readouterr()
     out = capture.out
 
-    for tool in ("flake8", "mypy", "isort", "black"):
+    for tool in ("ruff", "mypy", "black"):
         assert tool in out
 
     assert "lorem ipsum" in out

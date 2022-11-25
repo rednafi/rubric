@@ -8,7 +8,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rubric"
-version = "0.6.7"
+version = "1.0.0"
 authors = [
   { name="rednafi", email="redowan.nafi@gmail.com" },
 ]
@@ -37,8 +37,7 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
     "black",
-    "flake8",
-    "isort",
+    "ruff",
     "mypy",
     "pre-commit",
     "pip-tools",
@@ -63,25 +62,40 @@ include = [
 ]
 
 ##########################################
-# Development configs
+# Dev configs
 ##########################################
-
-[tool.isort]
-profile = "black"
-atomic = true
-extend_skip_glob = "scripts"
-line_length = 88
-
-[tool.black]
-extend-exclude = "scripts"
 
 [tool.mypy]
 follow_imports = "skip"
 ignore_missing_imports = true
 warn_no_return = false
 warn_unused_ignores = true
+allow_untyped_globals = true
 allow_redefinition = true
 pretty = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-exclude = ["build", "tests"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+
+[tool.ruff]
+line-length = 88
+
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F", "I001", "PT", "C4"]
+ignore = ["E501"]
+respect-gitignore = true
+
+per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.11.
+target-version = "py311"
+
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10

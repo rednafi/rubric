@@ -1,7 +1,6 @@
 # For linting.
 black
-flake8
-isort
+ruff
 mypy
 pre-commit
 
@@ -10,8 +9,3 @@ pip-tools
 
 # For testing.
 pytest
-pytest-asyncio
-
-# For building & uploading to PyPI.
-twine
-build

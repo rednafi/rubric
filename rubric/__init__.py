@@ -10,7 +10,6 @@ import pkg_resources
 
 FILENAMES = (
     ".editorconfig",
-    ".flake8",
     ".gitignore",
     ".pre-commit-config.yaml",
     "README.md",
@@ -60,7 +59,9 @@ def copy_over(
     # We use importlib here so that we don't have to deal with making
     # sure Python can find the `rubric` directory when this is installed
     # as a CLI.
-    with importlib.resources.open_text("rubric.files", src_filename) as src_file:
+    with importlib.resources.files("rubric.files").joinpath(src_filename).open(
+        "r", encoding="utf-8"
+    ) as src_file:
         with open(dst_filepath, open_mode) as dst_file:
 
             if open_mode == "w+":
@@ -125,7 +126,9 @@ def display_help(
 def display_content(filename: str) -> None:
     """Prints the contents of the config files."""
 
-    with importlib.resources.open_text("rubric.files", filename) as file:
+    with importlib.resources.files("rubric.files").joinpath(filename).open(
+        "r", encoding="utf-8"
+    ) as file:
 
         decor = "="
         pad = decor * ((TERMINAL_COLUMN_SIZE - len(filename)) // 2 - 10)
