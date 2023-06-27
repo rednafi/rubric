@@ -84,11 +84,9 @@ def test_copy_over_append(create_file):
     assert "tool.ruff" in file.read_text()
 
 
+@pytest.mark.parametrize("filename", ["pyproject.toml", "README.md"])
 @pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md"]
-)
-@pytest.mark.parametrize(
-    "overwrite, append",
+    ("overwrite", "append"),
     [(False, False), (True, False), (False, True), (True, True)],
 )
 def test_orcherstrator(create_file, overwrite, append):
@@ -112,16 +110,13 @@ def test_orcherstrator(create_file, overwrite, append):
     )
 
 
-@pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md"]
-)
-@pytest.mark.parametrize("overwrite, append", [(True, False)])
+@pytest.mark.parametrize("filename", ["pyproject.toml", "README.md"])
+@pytest.mark.parametrize(("overwrite", "append"), [(True, False)])
 def test_orcherstrator_overwrite(
     create_file,
     overwrite,
     append,
 ):
-
     file = create_file
     directory = file.parent
     file.write_text("Lorem ipsum!")
@@ -151,10 +146,8 @@ def test_orcherstrator_overwrite(
     assert "Lorem ipsum!" not in file.read_text()
 
 
-@pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md"]
-)
-@pytest.mark.parametrize("overwrite, append", [(False, True)])
+@pytest.mark.parametrize("filename", ["pyproject.toml", "README.md"])
+@pytest.mark.parametrize(("overwrite", "append"), [(False, True)])
 def test_orcherstrator_append(create_file, overwrite, append):
     file = create_file
     directory = file.parent

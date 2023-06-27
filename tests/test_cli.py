@@ -11,7 +11,6 @@ def test_cli_version():
         autospec=True,
         return_value="version: 0.0.0\n",
     ):
-
         runner = CliRunner()
         result = runner.invoke(rubric.cli, ["--version"])
         assert result.exit_code == 0

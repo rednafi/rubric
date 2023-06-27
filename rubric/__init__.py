@@ -28,7 +28,6 @@ def copy_over(
     overwrite: bool = False,
     append: bool = False,
 ) -> None:
-
     """
     This function takes 'src_filename' and 'dst_dirname' where they mean
     source file name and destination directory name respectively.
@@ -59,7 +58,6 @@ def copy_over(
     # as a CLI.
     with importlib.resources.open_text("rubric.files", src_filename) as src_file:
         with open(dst_filepath, open_mode) as dst_file:
-
             if open_mode == "w+":
                 if overwrite:
                     print(f"Overwriting {src_filename}...")
@@ -140,7 +138,6 @@ def orchestrator(
     append: bool = False,
     show: bool = False,
 ) -> None:
-
     """
     Display / Create / Overwrite / Append to the files listed
     in the 'FILENAMES' iterable.
@@ -234,7 +231,6 @@ def cli(
     append: bool,
     show: bool,
 ) -> None:
-
     # Display help text when there's no flag.
     if not any((list, create, overwrite, append, show)):
         display_help(ctx, None, True)
