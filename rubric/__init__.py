@@ -15,9 +15,7 @@ FILENAMES = (
     "README.md",
     "Makefile",
     "pyproject.toml",
-    "requirements-dev.in",
     "requirements-dev.txt",
-    "requirements.in",
     "requirements.txt",
 )
 

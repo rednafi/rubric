@@ -63,13 +63,10 @@ test: ## Run the tests against the current version of Python.
 
 .PHONY: dep-lock
 dep-lock: ## Freeze deps in 'requirements.txt' file.
-	@pip-compile requirements.in -o requirements.txt --no-emit-options
-	@pip-compile requirements-dev.in -o requirements-dev.txt --no-emit-options
-
-
-.PHONY: dep-sync
-dep-sync: ## Sync venv installation with 'requirements.txt' file.
-	@pip-sync
+	@pip-compile -o requirements.txt pyproject.toml --generate-hashes --strip-extras
+	@echo "--constraint $(PWD)/requirements.txt" \
+    | pip-compile --generate-hashes --output-file requirements-dev.txt \
+    --extra dev - pyproject.toml
 
 
 .PHONY: build

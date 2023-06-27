@@ -21,9 +21,7 @@ def test_filenames():
         "README.md",
         "Makefile",
         "pyproject.toml",
-        "requirements-dev.in",
         "requirements-dev.txt",
-        "requirements.in",
         "requirements.txt",
     )
 
@@ -87,7 +85,7 @@ def test_copy_over_append(create_file):
 
 
 @pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md", "requirements-dev.in"]
+    "filename", ["pyproject.toml", "README.md"]
 )
 @pytest.mark.parametrize(
     "overwrite, append",
@@ -115,7 +113,7 @@ def test_orcherstrator(create_file, overwrite, append):
 
 
 @pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md", "requirements-dev.in"]
+    "filename", ["pyproject.toml", "README.md"]
 )
 @pytest.mark.parametrize("overwrite, append", [(True, False)])
 def test_orcherstrator_overwrite(
@@ -154,7 +152,7 @@ def test_orcherstrator_overwrite(
 
 
 @pytest.mark.parametrize(
-    "filename", ["pyproject.toml", "README.md", "requirements-dev.in"]
+    "filename", ["pyproject.toml", "README.md"]
 )
 @pytest.mark.parametrize("overwrite, append", [(False, True)])
 def test_orcherstrator_append(create_file, overwrite, append):
@@ -189,7 +187,7 @@ def test_orcherstrator_append(create_file, overwrite, append):
 
 
 def test_display(capsys):
-    for filename in ("pyproject.toml", "README.md", "requirements-dev.in"):
+    for filename in ("pyproject.toml", "README.md"):
         rubric.display_content(filename)
 
     capture = capsys.readouterr()
