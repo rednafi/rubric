@@ -191,9 +191,9 @@ pexpect==4.8.0 \
     --hash=sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937 \
     --hash=sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c
     # via hatch
-pip-tools==6.13.0 \
-    --hash=sha256:50943f151d87e752abddec8158622c34ad7f292e193836e90e30d87da60b19d9 \
-    --hash=sha256:61d46bd2eb8016ed4a924e196e6e5b0a268cd3babd79e593048720db23522bb1
+pip-tools==7.1.0 \
+    --hash=sha256:4e60b7d05b046f49ad5bf3c2818df8e78dec5820e9b331cd9898cff5ec19ff2f \
+    --hash=sha256:f6ead499e726c8cfee04b2dea6282a9faf29663c378d9a4aca2ea6b86c8ec715
     # via rubric (pyproject.toml)
 platformdirs==3.8.0 \
     --hash=sha256:b0cabcb11063d21a0b261d557acb0a9d2126350e63b70cdf7db6347baea456dc \
