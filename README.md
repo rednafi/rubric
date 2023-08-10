@@ -206,6 +206,7 @@ sweep, use the following command:
 [mypy]: https://github.com/python/mypy
 [pip-tools]: https://github.com/jazzband/pip-tools
 [pre-commit]: https://pre-commit.com/
+[hatch]: https://hatch.pypa.io/latest/
 
 <div align="center">
 <i> ✨ 🍰 ✨ </i>
