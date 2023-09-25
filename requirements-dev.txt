@@ -315,9 +315,9 @@ tomlkit==0.11.8 \
     --hash=sha256:8c726c4c202bdb148667835f68d68780b9a003a9ec34167b6c673b38eff2a171 \
     --hash=sha256:9330fc7faa1db67b541b28e62018c17d20be733177d290a13b24c62d1614e0c3
     # via hatch
-trove-classifiers==2023.5.24 \
-    --hash=sha256:d9d7ae14fb90bf3d50bef99c3941b176b5326509e6e9037e622562d6352629d0 \
-    --hash=sha256:fd5a1546283be941f47540a135bdeae8fb261380a6a204d9c18012f2a1b0ceae
+trove-classifiers==2023.9.19 \
+    --hash=sha256:3e700af445c802f251ce2b741ee78d2e5dfa5ab8115b933b89ca631b414691c9 \
+    --hash=sha256:55460364fe248294386d4dfa5d16544ec930493ecc6bd1db07a0d50afb37018e
     # via hatchling
 types-pkg-resources==0.1.3 \
     --hash=sha256:0cb9972cee992249f93fff1a491bf2dc3ce674e5a1926e27d4f0866f7d9b6d9c \
